@@ -78,10 +78,10 @@ Think of <b><i>gradboostr_fit()</i></b> as the “model builder.”
 
 | Method     | What happens                                      |
 |------------|---------------------------------------------------|
-| `rf`       |       Calls C++ random forest regression engine     |
-| `rf_class` |       Calls C++ random forest classification engine |
-| `gbm`      |       Calls C++ gradient boosting engine                |
-| `nn`       |       Calls C++ neural network engine                   |
+| `rf`       |       Calls random forest regression engine     |
+| `rf_class` |       Calls random forest classification engine |
+| `gbm`      |       Calls gradient boosting engine                |
+| `nn`       |       Calls neural network engine                   |
 
 ## How to Tune Neural Networks in GradBoostR
 
@@ -149,6 +149,12 @@ The affect on performance:
 <i>If your NN engine exposes this, it controls how big each gradient step is.</i>
 
 An optimal learning rate lets the model reach a low error rate , improves the training process, improves accuracy ...
+
+```md
+```r
+<- gradboostr_fit(X, y_reg, method = "gbm",
+                          learning_rate = 0.1, n_trees = 50)
+```
 
 <b>A guideline:</b>
 
