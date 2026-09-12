@@ -194,9 +194,103 @@ df_long %>% ggplot() +
   )
 ```
 
+# NN Residual Plot
 
+```{r nn-residuals}
+df_res <- data.frame(
+  Pred = pred_nn,
+  Resid = y_reg - pred_nn
+)
 
+ggplot(df_res, aes(Pred, Resid)) +
+  geom_point(alpha = 0.6, color = "purple") +
+  theme_minimal() +
+  labs(
+    title = "NN Residuals (hidden = 10)",
+    x = "Predicted",
+    y = "Residual"
+  )
+```
 
+# Tuning Hidden Layer Size
 
+```{r nn-tuning-hidden}
+sizes <- c(5, 10, 20, 40)
 
+results <- lapply(sizes, function(h) {
+  m <- gradboostr_fit(X, y_reg, method = "nn", hidden = h, epochs = 50)
+  pred <- gradboostr_predict(m, X)
+  rmse <- sqrt(mean((pred - y_reg)^2))
+  data.frame(hidden = h, RMSE = rmse)
+})
 
+do.call(rbind, results)
+```
+
+# Visualizing Hidden Layer Tuning
+
+```{r nn-tuning-plot}
+df_tune <- do.call(rbind, results)
+
+ggplot(df_tune, aes(hidden, RMSE)) +
+  geom_line(color = "darkgreen") +
+  geom_point(size = 3) +
+  theme_minimal() +
+  labs(
+    title = "Effect of Hidden Layer Size on NN Performance",
+    x = "Hidden Units",
+    y = "RMSE"
+  )
+```
+
+# NN Training Time Benchmark
+
+```{r nn-benchmark}
+library(microbenchmark)
+
+bench_nn <- microbenchmark(
+  nn10 = gradboostr_fit(X, y_reg, method = "nn", hidden = 10, epochs = 50),
+  nn40 = gradboostr_fit(X, y_reg, method = "nn", hidden = 40, epochs = 50),
+  times = 5
+)
+
+bench_nn
+```
+
+# Benchmark plot
+
+```{r nn-benchmark-plot, fig.width=12, fig.height=9}
+autoplot(bench_nn) +
+  ggtitle("NN Training Time: hidden = 10 vs hidden = 40")
+```
+
+# NN vs RF vs GBM Comparison
+
+```{r nn-vs-others}
+m_rf  <- gradboostr_fit(X, y_reg, method = "rf")
+m_gbm <- gradboostr_fit(X, y_reg, method = "gbm", learning_rate = 0.1, n_trees = 50)
+
+pred_rf  <- gradboostr_predict(m_rf, X)
+pred_gbm <- gradboostr_predict(m_gbm, X)
+
+df_all <- data.frame(
+  True = y_reg,
+  NN   = pred_nn,
+  RF   = pred_rf,
+  GBM  = pred_gbm
+)
+
+library(tidyr)
+df_long <- pivot_longer(df_all, cols = c("NN", "RF", "GBM"),
+                        names_to = "Model", values_to = "Pred")
+
+ggplot(df_long, aes(True, Pred, color = Model)) +
+  geom_point(alpha = 0.5) +
+  geom_abline(color = "black", linetype = "dashed") +
+  theme_minimal() +
+  labs(
+    title = "Model Comparison: NN vs RF vs GBM",
+    x = "True Values",
+    y = "Predicted Values"
+  )
+```
