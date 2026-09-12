@@ -1,0 +1,105 @@
+\nonstopmode{}
+\documentclass[a4paper]{book}
+\usepackage[times,inconsolata,hyper]{Rd}
+\usepackage{makeidx}
+\makeatletter\@ifl@t@r\fmtversion{2018/04/01}{}{\usepackage[utf8]{inputenc}}\makeatother
+% \usepackage{graphicx} % @USE GRAPHICX@
+\makeindex{}
+\begin{document}
+\chapter*{}
+\begin{center}
+{\textbf{\huge Package `GradBoostR'}}
+\par\bigskip{\large \today}
+\end{center}
+\ifthenelse{\boolean{Rd@use@hyper}}{\hypersetup{pdftitle = {GradBoostR: Gradient Boosting + RF + NN Engine}}}{}
+\ifthenelse{\boolean{Rd@use@hyper}}{\hypersetup{pdfauthor = {Nic Coxen}}}{}
+\begin{description}
+\raggedright{}
+\item[Type]\AsIs{Package}
+\item[Title]\AsIs{Gradient Boosting + RF + NN Engine}
+\item[Version]\AsIs{0.1.0}
+\item[Description]\AsIs{Fast ML engine with boosting, random forests, and neural nets.}
+\item[License]\AsIs{GPL-3}
+\item[Encoding]\AsIs{UTF-8}
+\item[Imports]\AsIs{Rcpp}
+\item[LinkingTo]\AsIs{Rcpp, RcppArmadillo}
+\item[Config/roxygen2/version]\AsIs{8.1.0}
+\item[NeedsCompilation]\AsIs{yes}
+\item[Author]\AsIs{Nic Coxen [aut, cre]}
+\item[Maintainer]\AsIs{Nic Coxen }\email{nicjcoxen@gmail.com}\AsIs{}
+\item[Archs]\AsIs{x64}
+\end{description}
+\Rdcontents{Contents}
+\HeaderA{gradboostr\_fit}{Train a GradBoostR model}{gradboostr.Rul.fit}
+%
+\begin{Description}
+Train a GradBoostR model
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+gradboostr_fit(x, y, method = c("gbm", "rf", "rf_class", "nn"), ...)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] Matrix or data.frame of features.
+
+\item[\code{y}] Numeric (regression) or factor/integer (classification).
+
+\item[\code{method}] One of: "gbm", "rf", "rf\_class", "nn".
+
+\item[\code{...}] Additional hyperparameters passed to the underlying C++ engine.
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+A gradboostr\_model object.
+\end{Value}
+\HeaderA{gradboostr\_predict}{Predict using a GradBoostR model}{gradboostr.Rul.predict}
+%
+\begin{Description}
+Predict using a GradBoostR model
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+gradboostr_predict(object, newdata, type = c("response", "prob"), ...)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{object}] A gradboostr\_model from gradboostr\_fit().
+
+\item[\code{newdata}] Matrix or data.frame of features.
+
+\item[\code{type}] "response" or "prob" (classification only).
+
+\item[\code{...}] Not used.
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Numeric vector (regression), factor (classification), or probability matrix.
+\end{Value}
+\HeaderA{hello}{Hello, World!}{hello}
+%
+\begin{Description}
+Prints 'Hello, world!'.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+hello()
+\end{verbatim}
+\end{Usage}
+%
+\begin{Examples}
+\begin{ExampleCode}
+hello()
+\end{ExampleCode}
+\end{Examples}
+\printindex{}
+\end{document}

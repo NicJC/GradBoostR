@@ -1,0 +1,6 @@
+setwd("C:/R/Package/GradBoostR")
+library(GradBoostR)
+X <- matrix(rnorm(20), nrow=4, ncol=5)
+y <- sample(0:1, 4, replace=TRUE)
+model <- rf_class_fit_fast(X, y, n_trees = 1, max_depth = 1, mtry = 1)
+print(rf_class_predict_fast(X, model))

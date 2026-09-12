@@ -12,7 +12,12 @@ Authors@R: c(
 Description: Fast ML engine with boosting, random forests, and neural nets.
 License: GPL-3
 Encoding: UTF-8
-LazyData: true
 Imports: Rcpp
 LinkingTo: Rcpp, RcppArmadillo
 Config/roxygen2/version: 8.1.0
+NeedsCompilation: yes
+Packaged: 2026-09-09 10:56:44 UTC; nicjc
+Author: Nic Coxen [aut, cre]
+Maintainer: Nic Coxen <nicjcoxen@gmail.com>
+Built: R 4.6.0; x86_64-w64-mingw32; 2026-09-09 10:57:47 UTC; windows
+Archs: x64

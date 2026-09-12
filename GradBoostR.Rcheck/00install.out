@@ -1,0 +1,24 @@
+* installing *source* package 'GradBoostR' ...
+** this is package 'GradBoostR' version '0.1.0'
+** using staged installation
+** libs
+using C++ compiler: 'G__~1.EXE (GCC) 14.3.0'
+g++ -std=gnu++20  -I"C:/PROGRA~1/R/R-46~1.0/include" -DNDEBUG  -I'C:/Users/nicjc/AppData/Local/R/win-library/4.6/Rcpp/include' -I'C:/Users/nicjc/AppData/Local/R/win-library/4.6/RcppArmadillo/include'   -I"C:/rtools45/x86_64-w64-mingw32.static.posix/include"      -O2 -Wall  -mfpmath=sse -msse2 -mstackrealign    -c fit_stump.cpp -o fit_stump.o
+g++ -std=gnu++20  -I"C:/PROGRA~1/R/R-46~1.0/include" -DNDEBUG  -I'C:/Users/nicjc/AppData/Local/R/win-library/4.6/Rcpp/include' -I'C:/Users/nicjc/AppData/Local/R/win-library/4.6/RcppArmadillo/include'   -I"C:/rtools45/x86_64-w64-mingw32.static.posix/include"      -O2 -Wall  -mfpmath=sse -msse2 -mstackrealign    -c gbm_predict.cpp -o gbm_predict.o
+g++ -std=gnu++20  -I"C:/PROGRA~1/R/R-46~1.0/include" -DNDEBUG  -I'C:/Users/nicjc/AppData/Local/R/win-library/4.6/Rcpp/include' -I'C:/Users/nicjc/AppData/Local/R/win-library/4.6/RcppArmadillo/include'   -I"C:/rtools45/x86_64-w64-mingw32.static.posix/include"      -O2 -Wall  -mfpmath=sse -msse2 -mstackrealign    -c gradboost_fit.cpp -o gradboost_fit.o
+g++ -std=gnu++20  -I"C:/PROGRA~1/R/R-46~1.0/include" -DNDEBUG  -I'C:/Users/nicjc/AppData/Local/R/win-library/4.6/Rcpp/include' -I'C:/Users/nicjc/AppData/Local/R/win-library/4.6/RcppArmadillo/include'   -I"C:/rtools45/x86_64-w64-mingw32.static.posix/include"      -O2 -Wall  -mfpmath=sse -msse2 -mstackrealign    -c nn_module.cpp -o nn_module.o
+g++ -std=gnu++20  -I"C:/PROGRA~1/R/R-46~1.0/include" -DNDEBUG  -I'C:/Users/nicjc/AppData/Local/R/win-library/4.6/Rcpp/include' -I'C:/Users/nicjc/AppData/Local/R/win-library/4.6/RcppArmadillo/include'   -I"C:/rtools45/x86_64-w64-mingw32.static.posix/include"      -O2 -Wall  -mfpmath=sse -msse2 -mstackrealign    -c nn_predict.cpp -o nn_predict.o
+g++ -std=gnu++20  -I"C:/PROGRA~1/R/R-46~1.0/include" -DNDEBUG  -I'C:/Users/nicjc/AppData/Local/R/win-library/4.6/Rcpp/include' -I'C:/Users/nicjc/AppData/Local/R/win-library/4.6/RcppArmadillo/include'   -I"C:/rtools45/x86_64-w64-mingw32.static.posix/include"      -O2 -Wall  -mfpmath=sse -msse2 -mstackrealign    -c rf_class_fast.cpp -o rf_class_fast.o
+g++ -std=gnu++20  -I"C:/PROGRA~1/R/R-46~1.0/include" -DNDEBUG  -I'C:/Users/nicjc/AppData/Local/R/win-library/4.6/Rcpp/include' -I'C:/Users/nicjc/AppData/Local/R/win-library/4.6/RcppArmadillo/include'   -I"C:/rtools45/x86_64-w64-mingw32.static.posix/include"      -O2 -Wall  -mfpmath=sse -msse2 -mstackrealign    -c rf_fast.cpp -o rf_fast.o
+g++ -std=gnu++20  -I"C:/PROGRA~1/R/R-46~1.0/include" -DNDEBUG  -I'C:/Users/nicjc/AppData/Local/R/win-library/4.6/Rcpp/include' -I'C:/Users/nicjc/AppData/Local/R/win-library/4.6/RcppArmadillo/include'   -I"C:/rtools45/x86_64-w64-mingw32.static.posix/include"      -O2 -Wall  -mfpmath=sse -msse2 -mstackrealign    -c rf_predict_fast.cpp -o rf_predict_fast.o
+g++ -std=gnu++20 -shared -s -static-libgcc -o GradBoostR.dll tmp.def fit_stump.o gbm_predict.o gradboost_fit.o nn_module.o nn_predict.o rf_class_fast.o rf_fast.o rf_predict_fast.o -LC:/PROGRA~1/R/R-46~1.0/bin/x64 -lRlapack -LC:/PROGRA~1/R/R-46~1.0/bin/x64 -lRblas -lgfortran -lquadmath -LC:/rtools45/x86_64-w64-mingw32.static.posix/lib/x64 -LC:/rtools45/x86_64-w64-mingw32.static.posix/lib -LC:/PROGRA~1/R/R-46~1.0/bin/x64 -lR
+installing to C:/R/Package/GradBoostR/GradBoostR.Rcheck/00LOCK-GRADBO~1/00new/GradBoostR/libs/x64
+** R
+** byte-compile and prepare package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded from temporary location
+** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation path
+* DONE (GradBoostR)
