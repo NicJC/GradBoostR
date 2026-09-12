@@ -1,0 +1,202 @@
+---
+title: "GradBoostR Vignette"
+author: "Nic Coxen"
+date: "2026-09-12"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to GradBoostR}
+  %\VignetteEngine{rmarkdown::html_vignette}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+library(tidyverse)
+opts_chunk$set(fig.width=9, fig.height=6, fig.path="Figures/", out.width="100%")
+opts_chunk$set(comment="", fig.align="center", tidy=TRUE , cache=TRUE, fig.retina=2)
+options(knitr.kable.NA = '')
+library(GradBoostR)
+set.seed(123)
+```
+
+## Example Dataset
+
+```{r example data}
+X <- matrix(rnorm(300), ncol = 3)
+y_reg <- X[,1] * 2 + rnorm(100)
+y_class <- factor(ifelse(X[,1] + X[,2] > 0, "A", "B"))
+
+df <- data.frame(
+  X1 = X[,1],
+  X2 = X[,2],
+  X3 = X[,3],
+  y_reg = y_reg,
+  y_class = y_class
+)
+```
+
+```{r}
+head(df,8)
+```
+
+# Visualizing the dataset
+
+```{r data-visual}
+df %>% ggplot() +
+  aes(X1, y_reg) +
+  geom_point(alpha = 0.6, color = "steelblue") +
+  labs(
+    title = "Example Dataset: X1 vs y_reg",
+    x = "X1",
+    y = "Regression Target"
+  )
+```
+
+# Random Forest Regression
+
+```{r random forest regression}
+m_rf <- gradboostr_fit(X, y_reg, method = "rf")
+pred_rf <- gradboostr_predict(m_rf, X)
+head(pred_rf,8)
+```
+# Prediction vs Truth
+
+```{r rf-reg-plot}
+df_rf <- data.frame(True = y_reg, Pred = pred_rf)
+
+df_rf %>% ggplot() +
+  aes(True, Pred) +
+  geom_point(alpha = 0.6, color = "darkgreen") +
+  geom_abline(color = "red", linetype = "dashed") +
+  theme_minimal() +
+  labs(
+    title = "Random Forest Regression: Prediction vs Truth",
+    x = "True Values",
+    y = "Predicted Values"
+  )
+  
+```
+
+# Random Forest Classification
+
+```{r random forest classification}
+m_rf_c <- gradboostr_fit(X, y_class, method = "rf_class")
+pred_class <- gradboostr_predict(m_rf_c, X, type = "response")
+head(pred_class,8)
+```
+# Classification Boundary
+
+```{r rf-class-boundary}
+df_class <- data.frame(
+  X1 = X[,1],
+  X2 = X[,2],
+  Class = pred_class
+)
+
+df_class %>% ggplot() +
+  aes(X1, X2, color = Class) +
+  geom_point(alpha = 0.6) +
+  theme_grey() +
+  labs(
+    title = "Random Forest Classification Boundary",
+    x = "X1",
+    y = "X2",
+    color = "Predicted Class" 
+    )
+```
+
+```{r rf-class-bar}
+
+df_class %>% ggplot() +
+  aes(Class) +
+  geom_bar(fill = "darkcyan" , alpha = 0.7) +
+  theme_classic() +
+  labs(
+    title = "Random Forest Classification: Class Distribution",
+    x = "Class",
+    y = "Count"
+  )
+```
+
+## Gradient Boosting Regression
+
+```{r gbm regression}
+m_gbm <- gradboostr_fit(X, y_reg, method = "gbm", learning_rate = 0.1, n_trees = 50)
+pred_gbm <- gradboostr_predict(m_gbm, X)
+head(pred_gbm,8)
+```
+
+# Prediction vs Truth
+
+```{r gbm-reg-plot}
+df_gbm <- data.frame(True = y_reg, Pred = pred_gbm)
+
+ggplot(df_gbm, aes(True, Pred)) +
+  geom_point(alpha = 0.6, color = "darkorange") +
+  geom_abline(color = "black", linetype = "dotted") +
+  theme_light() +
+  labs(
+    title = "GBM Regression: Prediction vs Truth",
+    x = "True Values",
+    y = "Predicted Values"
+  )
+```
+
+# Neural Network Regression
+
+```{r neural net regression}
+m_nn <- gradboostr_fit(X, y_reg, method = "nn", hidden = 10, epochs = 50)
+pred_nn <- gradboostr_predict(m_nn, X)
+head(pred_nn,8)
+```
+# Prediction vs Truth
+
+```{r nn-reg-plot}
+df_nn <- data.frame(True = y_reg, Pred = pred_nn)
+
+df_nn %>%
+  ggplot() + aes(True, Pred) +
+  geom_point(alpha = 0.6) +
+  geom_jitter(color = "dodgerblue") + 
+  geom_abline(color = "red", linetype = "dashed") +
+   theme_grey() +
+   labs(
+    title = "Neural Network Regression: Prediction vs Truth",
+    x = "True Values",
+    y = "Predicted Values"
+  )
+```
+
+# Combined Plot
+
+```{r combined-model-plot}
+df_all <- data.frame(
+  True = y_reg,
+  RF = pred_rf,
+  GBM = pred_gbm,
+  NN = pred_nn
+)
+
+library(tidyr)
+
+df_long <- pivot_longer(df_all, cols = c("RF", "GBM", "NN"),
+                        names_to = "Model", values_to = "Pred")
+
+df_long %>% ggplot() +
+  aes(True, Pred, color = Model) +
+  geom_point(alpha = 0.5) +
+  geom_abline(color = "black", linetype = "dashed") +
+  theme_gray() +
+  labs(
+    title = "Model Comparison: Prediction vs Truth",
+    x = "True Values",
+    y = "Predicted Values"
+  )
+```
+
+
+
+
+
+
+
