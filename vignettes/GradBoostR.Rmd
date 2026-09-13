@@ -167,7 +167,7 @@ df_nn %>%
   )
 ```
 
-# Combined Plot
+# NN vs RF vs GBM Comparison
 
 ```{r combined-model-plot}
 df_all <- data.frame(
@@ -264,33 +264,103 @@ autoplot(bench_nn) +
   ggtitle("NN Training Time: hidden = 10 vs hidden = 40")
 ```
 
-# NN vs RF vs GBM Comparison
+# NN Example with Scaled Inputs
 
 ```{r nn-vs-others}
-m_rf  <- gradboostr_fit(X, y_reg, method = "rf")
-m_gbm <- gradboostr_fit(X, y_reg, method = "gbm", learning_rate = 0.1, n_trees = 50)
+X_scaled <- scale(X)
 
-pred_rf  <- gradboostr_predict(m_rf, X)
-pred_gbm <- gradboostr_predict(m_gbm, X)
+m_nn_scaled <- gradboostr_fit(X_scaled, y_reg, method = "nn", hidden = 10, epochs = 50)
+pred_nn_scaled <- gradboostr_predict(m_nn_scaled, X_scaled)
 
-df_all <- data.frame(
-  True = y_reg,
-  NN   = pred_nn,
-  RF   = pred_rf,
-  GBM  = pred_gbm
+head(pred_nn_scaled,8)
+```
+# Learning Rate Example
+
+```{r gbm-learning-rate}
+# Example data
+X <- matrix(rnorm(300), ncol = 3)
+y_reg <- X[,1] * 2 + rnorm(100)
+
+# Fit models with different learning rates
+m_lr_01 <- gradboostr_fit(X, y_reg, method = "gbm",
+                          learning_rate = 0.1, n_trees = 50)
+
+m_lr_005 <- gradboostr_fit(X, y_reg, method = "gbm",
+                           learning_rate = 0.05, n_trees = 50)
+
+m_lr_001 <- gradboostr_fit(X, y_reg, method = "gbm",
+                           learning_rate = 0.01, n_trees = 50)
+
+# Predictions
+pred_01  <- gradboostr_predict(m_lr_01,  X)
+pred_005 <- gradboostr_predict(m_lr_005, X)
+pred_001 <- gradboostr_predict(m_lr_001, X)
+
+# RMSE helper
+rmse <- function(a, b) sqrt(mean((a - b)^2))
+
+# Results table
+df_lr <- data.frame(
+  learning_rate = c(0.1, 0.05, 0.01),
+  RMSE = c(
+    rmse(pred_01,  y_reg),
+    rmse(pred_005, y_reg),
+    rmse(pred_001, y_reg)
+  )
 )
 
-library(tidyr)
-df_long <- pivot_longer(df_all, cols = c("NN", "RF", "GBM"),
-                        names_to = "Model", values_to = "Pred")
+df_lr
+```
 
-ggplot(df_long, aes(True, Pred, color = Model)) +
-  geom_point(alpha = 0.5) +
-  geom_abline(color = "black", linetype = "dashed") +
+```{r gbm-learning-rate-plot}
+ggplot(df_lr, aes(learning_rate, RMSE)) +
+  geom_point(size = 3, color = "darkorange") +
+  geom_line(color = "steelblue") +
   theme_minimal() +
   labs(
-    title = "Model Comparison: NN vs RF vs GBM",
-    x = "True Values",
-    y = "Predicted Values"
+    title = "Effect of Learning Rate on GBM Performance",
+    x = "Learning Rate",
+    y = "RMSE"
   )
 ```
+
+```{r nn-learning-rate}
+# Example dataset
+set.seed(1)
+X <- matrix(rnorm(300), ncol = 3)
+y_reg <- X[,1] * 2 + rnorm(100)
+
+# Scale inputs (NNs perform better with scaled features)
+X_scaled <- scale(X)
+
+# Fit NN models with different learning rates
+m_lr_01  <- gradboostr_fit(X_scaled, y_reg, method = "nn",
+                           hidden = 10, epochs = 80)
+
+m_lr_005 <- gradboostr_fit(X_scaled, y_reg, method = "nn",
+                           hidden = 10, epochs = 80)
+
+m_lr_001 <- gradboostr_fit(X_scaled, y_reg, method = "nn",
+                           hidden = 10, epochs = 80)
+
+# Predictions
+pred_01  <- gradboostr_predict(m_lr_01,  X_scaled)
+pred_005 <- gradboostr_predict(m_lr_005, X_scaled)
+pred_001 <- gradboostr_predict(m_lr_001, X_scaled)
+
+# RMSE helper
+rmse <- function(a, b) sqrt(mean((a - b)^2))
+
+# Results table
+df_lr <- data.frame(
+  learning_rate = c(0.1, 0.05, 0.01),
+  RMSE = c(
+    rmse(pred_01,  y_reg),
+    rmse(pred_005, y_reg),
+    rmse(pred_001, y_reg)
+  )
+)
+
+df_lr
+```
+

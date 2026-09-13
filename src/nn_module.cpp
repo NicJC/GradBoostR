@@ -26,7 +26,7 @@ List nn_train_arma(const arma::mat& X,
                    const arma::vec& y,
                    int hidden_units = 32,
                    int epochs = 50,
-                   double lr = 0.01) {
+                   double learning_rate = 0.01) {
 
   int n = X.n_rows;
   int p = X.n_cols;
@@ -60,10 +60,10 @@ List nn_train_arma(const arma::mat& X,
     arma::vec db1 = arma::sum(dZ1, 0).t();// h
 
     // SGD update
-    net.W1 -= lr * dW1;
-    net.b1 -= lr * db1;
-    net.W2 -= lr * dW2;
-    net.b2 -= lr * db2;
+    net.W1 -= learning_rate * dW1;
+    net.b1 -= learning_rate * db1;
+    net.W2 -= learning_rate * dW2;
+    net.b2 -= learning_rate * db2;
   }
 
   return List::create(

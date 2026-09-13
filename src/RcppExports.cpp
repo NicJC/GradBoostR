@@ -52,8 +52,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // nn_train_arma
-List nn_train_arma(const arma::mat& X, const arma::vec& y, int hidden_units, int epochs, double lr);
-RcppExport SEXP _GradBoostR_nn_train_arma(SEXP XSEXP, SEXP ySEXP, SEXP hidden_unitsSEXP, SEXP epochsSEXP, SEXP lrSEXP) {
+List nn_train_arma(const arma::mat& X, const arma::vec& y, int hidden_units, int epochs, double learning_rate);
+RcppExport SEXP _GradBoostR_nn_train_arma(SEXP XSEXP, SEXP ySEXP, SEXP hidden_unitsSEXP, SEXP epochsSEXP, SEXP learning_rateSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -61,8 +61,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const arma::vec& >::type y(ySEXP);
     Rcpp::traits::input_parameter< int >::type hidden_units(hidden_unitsSEXP);
     Rcpp::traits::input_parameter< int >::type epochs(epochsSEXP);
-    Rcpp::traits::input_parameter< double >::type lr(lrSEXP);
-    rcpp_result_gen = Rcpp::wrap(nn_train_arma(X, y, hidden_units, epochs, lr));
+    Rcpp::traits::input_parameter< double >::type learning_rate(learning_rateSEXP);
+    rcpp_result_gen = Rcpp::wrap(nn_train_arma(X, y, hidden_units, epochs, learning_rate));
     return rcpp_result_gen;
 END_RCPP
 }

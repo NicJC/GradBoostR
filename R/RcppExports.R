@@ -13,8 +13,8 @@ grad_boost_fit <- function(X, y, learning_rate, n_trees) {
     .Call(`_GradBoostR_grad_boost_fit`, X, y, learning_rate, n_trees)
 }
 
-nn_train_arma <- function(X, y, hidden_units = 32L, epochs = 50L, lr = 0.01) {
-    .Call(`_GradBoostR_nn_train_arma`, X, y, hidden_units, epochs, lr)
+nn_train_arma <- function(X, y, hidden_units = 32L, epochs = 50L, learning_rate = 0.01) {
+    .Call(`_GradBoostR_nn_train_arma`, X, y, hidden_units, epochs, learning_rate)
 }
 
 nn_predict_model <- function(X, model) {

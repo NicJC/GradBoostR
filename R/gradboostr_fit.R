@@ -48,9 +48,21 @@ gradboostr_fit <- function(x, y, method = c("gbm", "rf", "rf_class", "nn"), ...)
     class_labels <- NULL
   }
   else if (method == "nn") {
-    model <- nn_train_arma(x, y, ...)
+
+    args <- list(...)
+    hidden        <- args$hidden        %||% 10
+    epochs        <- args$epochs        %||% 50
+    learning_rate <- args$learning_rate %||% 0.01
+
+    model <- nn_train_arma(
+      x,
+      y,
+      hidden_units   = hidden,
+      epochs         = epochs,
+      learning_rate  = learning_rate
+    )
+
     class_labels <- if (is.factor(y)) levels(y) else NULL
-    learning_rate <- NA_real_
     init_value    <- NA_real_
     n_trees       <- NA_integer_
   }
