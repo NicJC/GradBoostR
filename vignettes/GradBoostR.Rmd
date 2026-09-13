@@ -313,9 +313,10 @@ df_lr
 ```
 
 ```{r gbm-learning-rate-plot}
-ggplot(df_lr, aes(learning_rate, RMSE)) +
-  geom_point(size = 3, color = "darkorange") +
-  geom_line(color = "steelblue") +
+df_lr %>% ggplot() +
+  aes(learning_rate, RMSE) +
+  geom_point(size = 3, color = "darkcyan") +
+  geom_line(color = "violet") +
   theme_minimal() +
   labs(
     title = "Effect of Learning Rate on GBM Performance",
@@ -323,6 +324,8 @@ ggplot(df_lr, aes(learning_rate, RMSE)) +
     y = "RMSE"
   )
 ```
+
+# Neural Network Learning Rate
 
 ```{r nn-learning-rate}
 # Example dataset
@@ -335,14 +338,13 @@ X_scaled <- scale(X)
 
 # Fit NN models with different learning rates
 m_lr_01  <- gradboostr_fit(X_scaled, y_reg, method = "nn",
-                           hidden = 10, epochs = 80)
+                           hidden = 10, epochs = 80, learning_rate = 0.1)
 
 m_lr_005 <- gradboostr_fit(X_scaled, y_reg, method = "nn",
-                           hidden = 10, epochs = 80)
+                           hidden = 10, epochs = 80, learning_rate = 0.05)
 
 m_lr_001 <- gradboostr_fit(X_scaled, y_reg, method = "nn",
-                           hidden = 10, epochs = 80)
-
+                           hidden = 10, epochs = 80, learning_rate = 0.01)
 # Predictions
 pred_01  <- gradboostr_predict(m_lr_01,  X_scaled)
 pred_005 <- gradboostr_predict(m_lr_005, X_scaled)
@@ -362,5 +364,109 @@ df_lr <- data.frame(
 )
 
 df_lr
+```
+
+```{r nn-learning-rate-plot}
+df_lr %>% ggplot() +
+  aes(learning_rate, RMSE) +
+  geom_point(size = 3, color = "darkorange") +
+  geom_line(color = "steelblue") +
+  theme_minimal() +
+  labs(
+    title = "Effect of Learning Rate on Neural Network Performance",
+    x = "Learning Rate",
+    y = "RMSE"
+  )
+```
+
+# Effect of Epochs
+
+```{r nn-epochs}
+epochs_grid <- c(40, 80, 160)
+
+res_epochs <- lapply(epochs_grid, function(e) {
+  m <- gradboostr_fit(
+    X_scaled, y_reg,
+    method        = "nn",
+    hidden        = 10,
+    epochs        = e,
+    learning_rate = 0.05
+  )
+  p <- gradboostr_predict(m, X_scaled)
+  data.frame(epochs = e, RMSE = rmse(p, y_reg))
+})
+
+df_epochs <- do.call(rbind, res_epochs)
+df_epochs
+```
+```{r nn-epochs-plot}
+df_epochs %>% ggplot() +
+  aes(epochs, RMSE) +
+  geom_point(size = 3, color = "darkorange") +
+  geom_line(color = "steelblue") +
+  theme_minimal() +
+  labs(
+    title = "Effect of Epochs on NN Performance",
+    x = "Epochs",
+    y = "RMSE"
+  )
+```
+
+# Grid search
+
+```{r nn-grid}
+hidden_grid <- c(5, 10, 20)
+epochs_grid <- c(40, 80)
+lr_grid     <- c(0.1, 0.05, 0.01)
+
+grid <- expand.grid(
+  hidden        = hidden_grid,
+  epochs        = epochs_grid,
+  learning_rate = lr_grid
+)
+
+res_grid <- lapply(seq_len(nrow(grid)), function(i) {
+  h  <- grid$hidden[i]
+  e  <- grid$epochs[i]
+  lr <- grid$learning_rate[i]
+
+  m <- gradboostr_fit(
+    X_scaled, y_reg,
+    method        = "nn",
+    hidden        = h,
+    epochs        = e,
+    learning_rate = lr
+  )
+  p <- gradboostr_predict(m, X_scaled)
+
+  data.frame(
+    hidden        = h,
+    epochs        = e,
+    learning_rate = lr,
+    RMSE          = rmse(p, y_reg)
+  )
+})
+
+df_grid <- do.call(rbind, res_grid)
+df_grid
+```
+
+```{r Best-grid}
+df_grid[which.min(df_grid$RMSE), ]
+```
+
+```{r nn-grid-heatmap}
+df_grid %>% ggplot() +
+  aes(hidden, epochs, fill = RMSE) +
+  geom_tile(color = "grey70") +
+  facet_wrap(~ learning_rate) +
+  scale_fill_viridis_c() +
+  theme_minimal() +
+  labs(
+    title = "NN Grid Search: Hidden, Epochs, Learning Rate",
+    x = "Hidden Units",
+    y = "Epochs",
+    fill = "RMSE"
+  )
 ```
 
