@@ -11,7 +11,8 @@
 
 <hr></hr>
 
-[for vignette]()
+[View the vignette](inst/doc/GradBoostR.html)
+
 
 <b>GradBoostR</b> is a unified machine‑learning toolkit designed to make fast, consistent modeling easy in R.
 It provides four high‑performance algorithms implemented in optimized C++:
