@@ -1,11 +1,17 @@
 ---
 title: "GradBoostR Vignette"
 author: "Nic Coxen"
-date: "2026-09-12"
-output: rmarkdown::html_vignette
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    keep_md: true
+knitr:
+  opts_chunk:
+    cache: false
+
 vignette: >
   %\VignetteIndexEntry{Introduction to GradBoostR}
-  %\VignetteEngine{rmarkdown::html_vignette}
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 

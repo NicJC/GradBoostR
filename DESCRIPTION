@@ -16,3 +16,5 @@ LazyData: true
 Imports: Rcpp
 LinkingTo: Rcpp, RcppArmadillo
 Config/roxygen2/version: 8.1.0
+VignetteBuilder: knitr
+Suggests: knitr, rmarkdown
