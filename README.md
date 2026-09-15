@@ -11,7 +11,7 @@
 
 <hr></hr>
 
-[View the vignette](inst/doc/GradBoostR.html)
+[View the vignette](https:/NicJC.github.io/GradBoostR/GradBoostR.html)
 
 
 <b>GradBoostR</b> is a unified machine‑learning toolkit designed to make fast, consistent modeling easy in R.
