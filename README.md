@@ -1,4 +1,4 @@
-# GradBoostR <img src="https://raw.githubusercontent.com/nicjc/GradBoostR/main/man/figures/logo.png" align="right" width="120" />
+# GradBoostR <img src="https://raw.githubusercontent.com/nicjc/GradBoostR/man/figures/GradBoostR.png" align="right" width="120" />
 
 <!-- Badges -->
 [![CRAN Status](https://www.r-pkg.org/badges/version/GradBoostR)](https://CRAN.R-project.org/package=GradBoostR)
