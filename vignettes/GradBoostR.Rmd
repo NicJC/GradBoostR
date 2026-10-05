@@ -117,7 +117,7 @@ df_class %>% ggplot() +
 
 df_class %>% ggplot() +
   aes(Class) +
-  geom_bar(fill = "darkcyan" , alpha = 0.7) +
+  geom_bar(fill = "violet" ) +
   theme_classic() +
   labs(
     title = "Random Forest Classification: Class Distribution",
@@ -139,9 +139,10 @@ head(pred_gbm,8)
 ```{r gbm-reg-plot}
 df_gbm <- data.frame(True = y_reg, Pred = pred_gbm)
 
-ggplot(df_gbm, aes(True, Pred)) +
+df_gbm %>% ggplot()  + 
+  aes(True, Pred) +
   geom_point(alpha = 0.6, color = "darkorange") +
-  geom_abline(color = "black", linetype = "dotted") +
+  geom_abline(color = "darkcyan", linetype = "dotted", linewidth = 1.35) +
   theme_light() +
   labs(
     title = "GBM Regression: Prediction vs Truth",
@@ -210,7 +211,8 @@ df_res <- data.frame(
   Resid = y_reg - pred_nn
 )
 
-ggplot(df_res, aes(Pred, Resid)) +
+df_res %>% ggplot() + 
+  aes(Pred, Resid) +
   geom_point(alpha = 0.6, color = "purple") +
   theme_minimal() +
   labs(
@@ -240,7 +242,8 @@ do.call(rbind, results)
 ```{r nn-tuning-plot}
 df_tune <- do.call(rbind, results)
 
-ggplot(df_tune, aes(hidden, RMSE)) +
+df_tune %>% ggplot() + 
+  aes(hidden, RMSE) +
   geom_line(color = "darkgreen") +
   geom_point(size = 3) +
   theme_minimal() +
@@ -277,7 +280,7 @@ bench_nn
 
 # Benchmark plot
 
-```{r benchmark-plot, fig.width=12, fig.height=9}
+```{r benchmark-plot}
 df_bench <- data.frame(
   Model = c("GBM", "RF", "NN"),
   Time  = c(
@@ -287,7 +290,8 @@ df_bench <- data.frame(
   )
 )
 
-ggplot(df_bench, aes(Model, Time)) +
+df_bench %>% ggplot() + 
+  aes(Model, Time) +
   geom_col(fill = "steelblue") +
   theme_minimal() +
   labs(
@@ -625,7 +629,8 @@ df_long <- pivot_longer(
   values_to = "Pred"
 )
 
-ggplot(df_long, aes(Truth, Pred)) +
+df_long %>% ggplot() + 
+  aes(Truth, Pred) +
   geom_point(alpha = 0.6, color = "steelblue") +
   geom_abline(color = "red", linetype = "dashed", linewidth = 1) +
   facet_wrap(~ Model) +
@@ -643,7 +648,8 @@ ggplot(df_long, aes(Truth, Pred)) +
 
 ```{r visual_data1}
 
-ggplot(df, aes(X1, y, color = X2)) +
+df %>% ggplot() + 
+  aes(X1, y, color = X2) +
   geom_point(alpha = 0.7) +
   scale_color_gradient2(low = "blue", high = "red", mid = "white") +
   theme_minimal() +
@@ -658,7 +664,8 @@ ggplot(df, aes(X1, y, color = X2)) +
 ```
 
 ```{r visual_data2}
-ggplot(df, aes(X1, X2, color = y)) +
+df %>% ggplot() + 
+  aes(X1, X2, color = y) +
   geom_point(alpha = 0.8) +
   scale_color_gradient2(low = "blue", high = "red", mid = "white") +
   theme_minimal() +
@@ -671,3 +678,296 @@ ggplot(df, aes(X1, X2, color = y)) +
   )
 
 ```
+# Neural Network with `nn_train_arma`
+
+#### The GradBoostR package includes a lightweight neural‑network implementation written in C++ using RcppArmadillo.
+#### This module provides a fast, minimal, fully transparent single‑hidden‑layer neural network suitable for regression tasks.
+#### It is designed to be easy to inspect, modify, and extend, making it ideal for educational purposes and small‑scale modeling.
+
+
+```{r}
+m_nn <- nn_train_arma(X, y, hidden_units = 10, epochs = 100, learning_rate = 0.01)
+```
+
+
+```{r structure}
+str(m_nn)
+```
+## Returned object guide:
+
+#### $W1   # p × h weight matrix for hidden layer
+#### $b1   # h × 1 bias vector for hidden layer
+#### $W2   # h × 1 weight matrix for output layer
+#### $b2   # scalar bias for output layer
+
+
+## Predict using        `nn_predict_model`
+
+```{r}
+pred_nn <- nn_predict_model(X, m_nn)
+
+head(pred_nn)
+```
+```{r nn_example}
+set.seed(123)
+
+# Synthetic nonlinear dataset
+X <- cbind(
+  x1 = rnorm(600),
+  x2 = rnorm(600)
+)
+
+y <- sin(X[,1]) + X[,2]^2 + rnorm(600, sd = 0.1)
+
+# Train NN
+m_nn <- nn_train_arma(X, y, hidden_units = 10, epochs = 100, learning_rate = 0.01)
+
+# Predict
+pred_nn <- nn_predict_model(X, m_nn)
+
+
+head(pred_nn)
+
+```
+
+# Model performance
+
+```{r}
+rmse <- function(a, b) sqrt(mean((a - b)^2))
+rmse(pred_nn, y)
+
+```
+
+```{r predictions vs truth}
+
+df_plot <- data.frame(
+  Truth = y,
+  Pred  = pred_nn
+)
+
+df_plot %>% ggplot() + 
+  aes(Truth, Pred) +
+  geom_point(alpha = 0.6, color = "darkorange") +
+  geom_abline(color = "blue", linetype = "dashed") +
+  theme_minimal() +
+  labs(
+    title = "Neural Network Predictions vs Truth",
+    subtitle = "Single-hidden-layer MLP trained via nn_train_arma()",
+    x = "True Values",
+    y = "Predicted Values"
+  )
+
+```
+
+# Fitting a GBM Model `gbm_predict()`
+
+```{r parameters}
+learning_rate <- 0.1
+n_trees <- 20
+
+```
+
+
+```{r residuals}
+residuals <- y
+stumps <- vector("list", n_trees)
+
+```
+
+
+```{r boosting}
+for (m in seq_len(n_trees)) {
+  st <- fit_stump(X, residuals)
+  stumps[[m]] <- st
+  
+  pred_m <- ifelse(
+    X[, st$feature + 1] <= st$threshold,
+    st$left_val,
+    st$right_val
+  )
+  
+  residuals <- residuals - learning_rate * pred_m
+}
+
+```
+
+
+```{r initial value}
+init_value <- mean(y)
+
+```
+
+
+```{r predict}
+pred_gbm <- gbm_predict(X, stumps, learning_rate, init_value)
+
+```
+
+
+```{r evaluate}
+rmse <- function(a, b) sqrt(mean((a - b)^2))
+rmse(pred_gbm, y)
+
+```
+
+```{r gbm visual}
+df_plot <- data.frame(
+  Truth = y,
+  Pred  = pred_gbm
+)
+
+df_plot %>% ggplot() + 
+  aes(Truth, Pred) +
+  geom_point(alpha = 0.6, color = "darkgreen") +
+  geom_abline(color = "red", linetype = "dashed") +
+  theme_bw() +
+  labs(
+    title = "GBM Predictions vs Truth",
+    subtitle = "Gradient boosting with decision stumps",
+    x = "True Values",
+    y = "Predicted Values"
+  )
+```
+
+## Decision surface `gbm_predict()`
+
+```{r grid}
+# Create a grid of points
+x1_seq <- seq(min(X[,1]), max(X[,1]), length.out = 150)
+x2_seq <- seq(min(X[,2]), max(X[,2]), length.out = 150)
+
+grid <- expand.grid(
+  x1 = x1_seq,
+  x2 = x2_seq
+)
+
+X_grid <- as.matrix(grid)
+head(X_grid,8)
+```
+
+```{r predict grid}
+grid$Pred <- gbm_predict(
+  X_grid,
+  stumps,
+  learning_rate,
+  init_value
+)
+
+```
+
+
+```{r visual grid}
+
+grid %>% ggplot() + 
+  aes(x1, x2, fill = Pred) +
+  geom_tile() +
+  scale_fill_gradient2(
+    low = "blue",
+    high = "red",
+    mid = "white",
+    midpoint = mean(grid$Pred)
+  ) +
+  theme_minimal() +
+  labs(
+    title = "GBM Decision Surface",
+    subtitle = "Gradient boosting with decision stumps",
+    x = "X1",
+    y = "X2",
+    fill = "Prediction"
+  )
+
+```
+
+## Random forest with `rf_predict_fast_class()`
+
+```{r synthetic classification data}
+set.seed(783)
+
+X <- cbind(
+  x1 = rnorm(300),
+  x2 = rnorm(300)
+)
+
+# Nonlinear classification boundary
+y <- ifelse(X[,1] + sin(2 * X[,2]) > 0, 1, 0)
+```
+
+
+```{r factor}
+y_factor <- factor(y)
+```
+
+
+```{r train}
+forest <- rf_class_fit_fast(
+  X,
+  y,
+  n_trees   = 50,
+  max_depth = 5,
+  mtry      = 1,
+  use_gini  = TRUE
+)
+```
+
+```{r predict_forest}
+pred_class <- rf_predict_fast_class(X, forest)
+```
+
+```{r convert}
+pred_factor <- factor(pred_class)
+```
+
+## Probabilities `rf_predict_fast_class_prob()`
+
+```{r probabilities}
+pred_prob <- rf_predict_fast_class_prob(X, forest, n_classes = 2)
+```
+
+### Accuracy
+
+```{r evaluate accuracy}
+mean(pred_factor == y_factor)
+```
+## Decision boundry `rf_predict_fast_class()`
+
+```{r visual decisi0n boundry}
+
+# Build grid
+x1_seq <- seq(min(X[,1]), max(X[,1]), length.out = 200)
+x2_seq <- seq(min(X[,2]), max(X[,2]), length.out = 200)
+
+grid <- expand.grid(x1 = x1_seq, x2 = x2_seq)
+grid_mat <- as.matrix(grid)
+
+# Predict on grid
+grid$Pred <- rf_predict_fast_class(grid_mat, forest)
+
+# Prepare point data
+df_points <- data.frame(
+  x1 = X[,1],
+  x2 = X[,2],
+  y_factor = y_factor
+)
+
+# Plot
+grid %>% ggplot() + 
+  aes(x1, x2, fill = Pred) +
+  geom_tile(alpha = 0.8) +
+  scale_fill_gradient(low = "blue", high = "red") +
+  geom_point(
+    data = df_points,
+    aes(x1, x2, color = y_factor),
+    inherit.aes = FALSE,
+    size = 1.2
+  ) +
+  theme_minimal() +
+  labs(
+    title = "Random Forest Decision Boundary",
+    subtitle = "rf_predict_fast_class()",
+    x = "X1",
+    y = "X2",
+    fill = "Predicted Class",
+    color = "True Class"
+  )
+```
+
