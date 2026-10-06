@@ -3,3 +3,5 @@
 export(fit_stump)
 export(gradboostr_fit)
 export(gradboostr_predict)
+export(rf_fit_fast)
+export(rf_predict_fast)
