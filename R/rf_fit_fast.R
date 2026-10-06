@@ -12,4 +12,3 @@ rf_fit_fast <- function(X, y, n_trees = 200, max_depth = 5, mtry = 3) {
   .Call(`_GradBoostR_rf_fit_fast`, X, y, n_trees, max_depth, mtry)
 }
 
-
