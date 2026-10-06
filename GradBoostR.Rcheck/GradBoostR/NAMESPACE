@@ -1,8 +1,0 @@
-exportPattern("^[[:alpha:]]+")
-importFrom(Rcpp, evalCpp)
-useDynLib(GradBoostR, .registration = TRUE)
-export(gradboostr_fit)
-export(gradboostr_predict)
-
-
-
