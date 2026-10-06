@@ -25,7 +25,7 @@ gradboostr_fit <- function(x, y, method = c("gbm", "rf", "rf_class", "nn"), ...)
     n_trees       <- NA_integer_
 
   } else if (method == "rf") {
-    model <- rf_fit_fast(X, y, ...)             # <- your RF regression C++ function
+    model <- rf_fit_fast(X, y, ...)            # <- your RF regression C++ function
     class_labels <- NULL
 
     learning_rate <- NA_real_
