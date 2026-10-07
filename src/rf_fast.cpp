@@ -164,7 +164,6 @@ Rcpp::List rf_fit_fast(const Rcpp::NumericMatrix& X,
                        int max_depth = 5,
                        int mtry = 3) {
 
-  // Convert to Armadillo views
   arma::mat X_arma = Rcpp::as<arma::mat>(X);
   arma::vec y_arma = Rcpp::as<arma::vec>(y);
 
@@ -250,7 +249,6 @@ double predict_tree_reg(const arma::rowvec& x,
 Rcpp::NumericVector rf_predict_fast(const Rcpp::NumericMatrix& X,
                                     Rcpp::List forest_list) {
 
-  // Convert to Armadillo view
   arma::mat X_arma = Rcpp::as<arma::mat>(X);
 
   int n       = X.nrow();
@@ -263,14 +261,14 @@ Rcpp::NumericVector rf_predict_fast(const Rcpp::NumericMatrix& X,
     std::vector<Node> nodes(tree.size());
 
     for (int i = 0; i < tree.size(); ++i) {
-      Rcpp::List n = tree[i];
+      Rcpp::List n_node = tree[i];
 
-      nodes[i].feature   = Rcpp::as<int>(n["feature"]);
-      nodes[i].threshold = Rcpp::as<double>(n["threshold"]);
-      nodes[i].is_leaf   = Rcpp::as<bool>(n["is_leaf"]);
-      nodes[i].value     = Rcpp::as<double>(n["value"]);
-      nodes[i].left      = Rcpp::as<int>(n["left"]);
-      nodes[i].right     = Rcpp::as<int>(n["right"]);
+      nodes[i].feature   = Rcpp::as<int>(n_node["feature"]);
+      nodes[i].threshold = Rcpp::as<double>(n_node["threshold"]);
+      nodes[i].is_leaf   = Rcpp::as<bool>(n_node["is_leaf"]);
+      nodes[i].value     = Rcpp::as<double>(n_node["value"]);
+      nodes[i].left      = Rcpp::as<int>(n_node["left"]);
+      nodes[i].right     = Rcpp::as<int>(n_node["right"]);
     }
 
     for (int i = 0; i < n; ++i)
