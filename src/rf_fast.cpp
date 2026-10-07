@@ -1,5 +1,6 @@
 #include <RcppArmadillo.h>
 #include "tree_utils.h"
+
 using namespace Rcpp;
 
 // ---------------------------------------------------------------------
@@ -152,28 +153,31 @@ int build_tree(const arma::mat& X,
   return idx;
 }
 
-
 // ---------------------------------------------------------------------
 // RF regression fit
 // ---------------------------------------------------------------------
 
 // [[Rcpp::export]]
-Rcpp::List rf_fit_fast(const arma::mat& X,
-                       const arma::vec& y,
+Rcpp::List rf_fit_fast(const Rcpp::NumericMatrix& X,
+                       const Rcpp::NumericVector& y,
                        int n_trees = 200,
                        int max_depth = 5,
                        int mtry = 3) {
 
-  std::vector< std::vector<Node> > forest(n_trees);
+  // Convert to Armadillo views
+  arma::mat X_arma = Rcpp::as<arma::mat>(X);
+  arma::vec y_arma = Rcpp::as<arma::vec>(y);
 
-  int n = X.n_rows;
+  int n = X_arma.n_rows;
+
+  std::vector< std::vector<Node> > forest(n_trees);
 
   for (int t = 0; t < n_trees; ++t) {
     arma::uvec idx = arma::randi<arma::uvec>(n, arma::distr_param(0, n - 1));
     if (idx.n_elem == 0) continue;
 
-    arma::mat Xb = X.rows(idx);
-    arma::vec yb = y.elem(idx);
+    arma::mat Xb = X_arma.rows(idx);
+    arma::vec yb = y_arma.elem(idx);
 
     std::vector<Node> nodes;
     build_tree(Xb, yb, 0, max_depth, mtry, nodes);
@@ -181,6 +185,7 @@ Rcpp::List rf_fit_fast(const arma::mat& X,
     if (!nodes.empty())
       forest[t] = nodes;
   }
+
   Rcpp::List out_forest(n_trees);
 
   for (int t = 0; t < n_trees; ++t) {
@@ -242,9 +247,13 @@ double predict_tree_reg(const arma::rowvec& x,
 // ---------------------------------------------------------------------
 
 // [[Rcpp::export]]
-arma::vec rf_predict_fast(const arma::mat& X, Rcpp::List forest_list) {
+Rcpp::NumericVector rf_predict_fast(const Rcpp::NumericMatrix& X,
+                                    Rcpp::List forest_list) {
 
-  int n       = X.n_rows;
+  // Convert to Armadillo view
+  arma::mat X_arma = Rcpp::as<arma::mat>(X);
+
+  int n       = X.nrow();
   int n_trees = forest_list.size();
 
   arma::vec out(n, arma::fill::zeros);
@@ -265,9 +274,10 @@ arma::vec rf_predict_fast(const arma::mat& X, Rcpp::List forest_list) {
     }
 
     for (int i = 0; i < n; ++i)
-      out[i] += predict_tree_reg(X.row(i), nodes);
+      out[i] += predict_tree_reg(X_arma.row(i), nodes);
   }
 
   out /= n_trees;
-  return out;
+
+  return Rcpp::NumericVector(out.begin(), out.end());
 }

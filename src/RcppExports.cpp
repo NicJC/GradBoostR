@@ -123,13 +123,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // rf_fit_fast
-Rcpp::List rf_fit_fast(const arma::mat& X, const arma::vec& y, int n_trees, int max_depth, int mtry);
+Rcpp::List rf_fit_fast(const Rcpp::NumericMatrix& X, const Rcpp::NumericVector& y, int n_trees, int max_depth, int mtry);
 RcppExport SEXP _GradBoostR_rf_fit_fast(SEXP XSEXP, SEXP ySEXP, SEXP n_treesSEXP, SEXP max_depthSEXP, SEXP mtrySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const arma::vec& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type y(ySEXP);
     Rcpp::traits::input_parameter< int >::type n_trees(n_treesSEXP);
     Rcpp::traits::input_parameter< int >::type max_depth(max_depthSEXP);
     Rcpp::traits::input_parameter< int >::type mtry(mtrySEXP);
@@ -138,12 +138,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // rf_predict_fast
-arma::vec rf_predict_fast(const arma::mat& X, Rcpp::List forest_list);
+Rcpp::NumericVector rf_predict_fast(const Rcpp::NumericMatrix& X, Rcpp::List forest_list);
 RcppExport SEXP _GradBoostR_rf_predict_fast(SEXP XSEXP, SEXP forest_listSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type X(XSEXP);
     Rcpp::traits::input_parameter< Rcpp::List >::type forest_list(forest_listSEXP);
     rcpp_result_gen = Rcpp::wrap(rf_predict_fast(X, forest_list));
     return rcpp_result_gen;
