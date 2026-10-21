@@ -2,5 +2,5 @@
 
 ### Articles
 
-- [GradBoostR
-  Vignette](https://nicjc.github.io/GradBoostR/articles/GradBoostR.md):
+- [Introduction to
+  GradBoostR](https://nicjc.github.io/GradBoostR/articles/GradBoostR.md):

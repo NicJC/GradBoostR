@@ -20,6 +20,9 @@ The package is designed for **speed**, **simplicity**, and **clean R interfaces*
 
 ---
 
+[![pkgdown site](https://img.shields.io/badge/docs-pkgdown-blue.svg)](https://nicjc.github.io/GradBoostR/)
+
+
 ## Installation
 
 ### From CRAN (once published)
