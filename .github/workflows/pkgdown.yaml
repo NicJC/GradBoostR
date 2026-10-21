@@ -27,29 +27,25 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y \
-            build-essential \
-            g++ \
-            libstdc++-13-dev \
-            libcurl4-openssl-dev \
-            libssl-dev \
-            libxml2-dev
+          sudo apt-get install -y build-essential g++ libstdc++-13-dev libcurl4-openssl-dev libssl-dev libxml2-dev
 
-      - name: Install R dependencies (explicit)
+      - name: Install R dependencies (pkgdown + vignette)
         run: |
           Rscript -e 'install.packages(c("pak","pkgdown","ggplot2","tidyr","knitr","rmarkdown"), repos = "https://cloud.r-project.org")'
+          Rscript -e 'pak::local_install_deps(upgrade = TRUE)'
 
       - name: Install compiled dependencies
         run: |
           Rscript -e 'install.packages(c("Rcpp","RcppArmadillo"), repos = "https://cloud.r-project.org")'
 
-      - name: Install package (local) with pak
+      - name: Install package with pak
         run: |
           Rscript -e 'pak::local_install(".", upgrade = TRUE)'
 
-      - name: Verify package installed
+      - name: Verify pkgdown and package installed
         run: |
-          Rscript -e 'cat("R library paths:\\n"); print(.libPaths()); cat("\\nInstalled packages (grep GradBoostR):\\n"); print(installed.packages()[grepl("^GradBoostR$", installed.packages()[,"Package"]), c("Package","LibPath")])'
+          Rscript -e 'cat("pkgdown present: "); print(requireNamespace("pkgdown", quietly=TRUE)); if (requireNamespace("pkgdown", quietly=TRUE)) print(packageVersion("pkgdown"))'
+          Rscript -e 'cat("GradBoostR installed: "); print("GradBoostR" %in% rownames(installed.packages())); print(installed.packages()[grepl("^GradBoostR$", installed.packages()[,"Package"]), c("Package","LibPath")])'
 
       - name: Build site
         run: |
