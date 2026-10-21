@@ -35,14 +35,21 @@ jobs:
             libssl-dev \
             libxml2-dev
 
-      - name: Install R dependencies
+      - name: Install R dependencies (explicit)
         run: |
-          Rscript -e 'install.packages(c("pak","pkgdown","ggplot2","tidyr","knitr","rmarkdown"))'
-          Rscript -e 'pak::local_install_deps(upgrade = TRUE)'
+          Rscript -e 'install.packages(c("pak","pkgdown","ggplot2","tidyr","knitr","rmarkdown"), repos = "https://cloud.r-project.org")'
 
-      - name: Test package installation
+      - name: Install compiled dependencies
         run: |
-          Rscript -e 'install.packages(".", repos = NULL, type = "source")'
+          Rscript -e 'install.packages(c("Rcpp","RcppArmadillo"), repos = "https://cloud.r-project.org")'
+
+      - name: Install package (local) with pak
+        run: |
+          Rscript -e 'pak::local_install(".", upgrade = TRUE)'
+
+      - name: Verify package installed
+        run: |
+          Rscript -e 'cat("R library paths:\\n"); print(.libPaths()); cat("\\nInstalled packages (grep GradBoostR):\\n"); print(installed.packages()[grepl("^GradBoostR$", installed.packages()[,"Package"]), c("Package","LibPath")])'
 
       - name: Build site
         run: |
