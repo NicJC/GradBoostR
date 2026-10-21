@@ -1,8 +1,0 @@
-"0","m_gbm <- gradboostr_fit("
-"0","  X, y,"
-"0","  method        = ""gbm"","
-"0","  learning_rate = 0.1,"
-"0","  n_trees       = 50"
-"0",")"
-"2","Error: object 'X' not found
-"

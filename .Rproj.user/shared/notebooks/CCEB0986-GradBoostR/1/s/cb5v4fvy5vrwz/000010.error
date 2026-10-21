@@ -1,1 +1,0 @@
-{"frames":[{"func":"gradboostr_fit(X, y, method = \"gbm\", learning_rate = 0.1, n_trees = 50)","file":"","line_number":0,"end_line_number":0,"character_number":0,"end_character_number":0},{"func":"is.data.frame(x)","file":"","line_number":0,"end_line_number":0,"character_number":0,"end_character_number":0}],"message":"Error: object 'X' not found\n"}

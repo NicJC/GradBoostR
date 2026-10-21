@@ -1,8 +1,0 @@
-"0","stump_predict <- function(X, stump) {"
-"0","  f  <- stump$feature + 1  "
-"0","  thr <- stump$threshold"
-"0","  lv  <- stump$left_val"
-"0","  rv  <- stump$right_val"
-"0","  "
-"0","  ifelse(X[, f] <= thr, lv, rv)"
-"0","}"

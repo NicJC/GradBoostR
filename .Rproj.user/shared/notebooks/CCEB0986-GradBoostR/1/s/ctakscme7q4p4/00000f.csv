@@ -1,3 +1,0 @@
-"0","m_rf <- gradboostr_fit(X, y, method = ""rf"")"
-"0","pred_rf <- gradboostr_predict(m_rf, X)"
-"0",""
