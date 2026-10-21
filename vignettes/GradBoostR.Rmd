@@ -1,5 +1,5 @@
 ---
-title: "GradBoostR Vignette"
+title: "Introduction to GradBoostR"
 author: "Nic Coxen"
 date: "`r Sys.Date()`"
 output:
