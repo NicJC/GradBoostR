@@ -1,0 +1,25 @@
+Package: GradBoostR
+Type: Package
+Title: Gradient Boosting + RF + NN Engine
+Version: 0.1.0
+Authors@R: c(
+    person(
+      "Nic", "Coxen",
+      email = "nicjcoxen@gmail.com",
+      role = c("aut", "cre")
+    )
+  )
+Description: Fast ML engine with boosting, random forests, and neural nets.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Imports: Rcpp
+LinkingTo: Rcpp, RcppArmadillo
+Config/roxygen2/version: 8.1.0
+VignetteBuilder: knitr
+Suggests: 
+    ggplot2,
+    tidyr,
+    rmarkdown,
+    knitr
+Roxygen: list(markdown = TRUE)
