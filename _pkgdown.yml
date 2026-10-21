@@ -1,0 +1,12 @@
+template:
+  bootstrap: 5
+
+navbar:
+  structure:
+    left:
+      - text: "Reference"
+        href: "reference/index.html"
+      - text: "Articles"
+        href: "articles/index.html"
+      - text: "News"
+        href: "news/index.html"
