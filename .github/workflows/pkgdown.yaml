@@ -37,7 +37,7 @@ jobs:
 
       - name: Install R dependencies
         run: |
-          Rscript -e 'install.packages(c("pak","pkgdown","ggplot2"))'
+          Rscript -e 'install.packages(c("pak","pkgdown","ggplot2","tidyr","knitr","rmarkdown"))'
           Rscript -e 'pak::local_install_deps(upgrade = TRUE)'
 
       - name: Test package installation
