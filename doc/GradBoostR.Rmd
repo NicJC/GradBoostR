@@ -1,0 +1,479 @@
+---
+title: "GradBoostR Vignette"
+author: "Nic Coxen"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    df_print: paged
+knitr:
+  opts_chunk:
+    cache: false
+
+vignette: >
+  %\VignetteIndexEntry{Introduction to GradBoostR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+library(ggplot2)
+library(tidyr)
+opts_chunk$set(fig.width=9, fig.height=6, fig.path="Figures/", out.width="100%")
+opts_chunk$set(comment="", fig.align="center", tidy=TRUE , cache=TRUE, fig.retina=2)
+options(knitr.kable.NA = '')
+library(GradBoostR)
+set.seed(123)
+```
+
+## Example Dataset
+
+```{r example data}
+X <- matrix(rnorm(300), ncol = 3)
+y_reg <- X[,1] * 2 + rnorm(100)
+y_class <- factor(ifelse(X[,1] + X[,2] > 0, "A", "B"))
+
+df <- data.frame(
+  X1 = X[,1],
+  X2 = X[,2],
+  X3 = X[,3],
+  y_reg = y_reg,
+  y_class = y_class
+)
+```
+
+```{r}
+head(df,8)
+```
+
+# Visualizing the dataset
+
+```{r data-visual}
+df %>% ggplot() +
+  aes(X1, y_reg) +
+  geom_point(alpha = 0.6, color = "steelblue") +
+  labs(
+    title = "Example Dataset: X1 vs y_reg",
+    x = "X1",
+    y = "Regression Target"
+  )
+```
+
+# Random Forest Regression
+
+```{r random forest regression}
+m_rf <- gradboostr_fit(X, y_reg, method = "rf")
+pred_rf <- gradboostr_predict(m_rf, X)
+head(pred_rf,8)
+```
+# Prediction vs Truth
+
+```{r rf-reg-plot}
+df_rf <- data.frame(True = y_reg, Pred = pred_rf)
+
+df_rf %>% ggplot() +
+  aes(True, Pred) +
+  geom_point(alpha = 0.6, color = "darkgreen") +
+  geom_abline(color = "red", linetype = "dashed") +
+  theme_minimal() +
+  labs(
+    title = "Random Forest Regression: Prediction vs Truth",
+    x = "True Values",
+    y = "Predicted Values"
+  )
+  
+```
+
+# Random Forest Classification
+
+```{r random forest classification}
+m_rf_c <- gradboostr_fit(X, y_class, method = "rf_class")
+pred_class <- gradboostr_predict(m_rf_c, X, type = "response")
+head(pred_class,8)
+```
+# Classification Boundary
+
+```{r rf-class-boundary}
+df_class <- data.frame(
+  X1 = X[,1],
+  X2 = X[,2],
+  Class = pred_class
+)
+
+df_class %>% ggplot() +
+  aes(X1, X2, color = Class) +
+  geom_point(alpha = 0.6) +
+  theme_grey() +
+  labs(
+    title = "Random Forest Classification Boundary",
+    x = "X1",
+    y = "X2",
+    color = "Predicted Class" 
+    )
+```
+
+```{r rf-class-bar}
+
+df_class %>% ggplot() +
+  aes(Class) +
+  geom_bar(fill = "darkcyan" , alpha = 0.7) +
+  theme_classic() +
+  labs(
+    title = "Random Forest Classification: Class Distribution",
+    x = "Class",
+    y = "Count"
+  )
+```
+
+## Gradient Boosting Regression
+
+```{r gbm regression}
+m_gbm <- gradboostr_fit(X, y_reg, method = "gbm", learning_rate = 0.1, n_trees = 50)
+pred_gbm <- gradboostr_predict(m_gbm, X)
+head(pred_gbm,8)
+```
+
+# Prediction vs Truth
+
+```{r gbm-reg-plot}
+df_gbm <- data.frame(True = y_reg, Pred = pred_gbm)
+
+ggplot(df_gbm, aes(True, Pred)) +
+  geom_point(alpha = 0.6, color = "darkorange") +
+  geom_abline(color = "black", linetype = "dotted") +
+  theme_light() +
+  labs(
+    title = "GBM Regression: Prediction vs Truth",
+    x = "True Values",
+    y = "Predicted Values"
+  )
+```
+
+# Neural Network Regression
+
+```{r neural net regression}
+m_nn <- gradboostr_fit(X, y_reg, method = "nn", hidden = 10, epochs = 50)
+pred_nn <- gradboostr_predict(m_nn, X)
+head(pred_nn,8)
+```
+# Prediction vs Truth
+
+```{r nn-reg-plot}
+df_nn <- data.frame(True = y_reg, Pred = pred_nn)
+
+df_nn %>%
+  ggplot() + aes(True, Pred) +
+  geom_point(alpha = 0.6) +
+  geom_jitter(color = "dodgerblue") + 
+  geom_abline(color = "red", linetype = "dashed") +
+   theme_grey() +
+   labs(
+    title = "Neural Network Regression: Prediction vs Truth",
+    x = "True Values",
+    y = "Predicted Values"
+  )
+```
+
+# NN vs RF vs GBM Comparison
+
+```{r combined-model-plot}
+df_all <- data.frame(
+  True = y_reg,
+  RF = pred_rf,
+  GBM = pred_gbm,
+  NN = pred_nn
+)
+
+library(tidyr)
+
+df_long <- pivot_longer(df_all, cols = c("RF", "GBM", "NN"),
+                        names_to = "Model", values_to = "Pred")
+
+df_long %>% ggplot() +
+  aes(True, Pred, color = Model) +
+  geom_point(alpha = 0.5) +
+  geom_abline(color = "black", linetype = "dashed") +
+  theme_gray() +
+  labs(
+    title = "Model Comparison: Prediction vs Truth",
+    x = "True Values",
+    y = "Predicted Values"
+  )
+```
+
+# NN Residual Plot
+
+```{r nn-residuals}
+df_res <- data.frame(
+  Pred = pred_nn,
+  Resid = y_reg - pred_nn
+)
+
+ggplot(df_res, aes(Pred, Resid)) +
+  geom_point(alpha = 0.6, color = "purple") +
+  theme_minimal() +
+  labs(
+    title = "NN Residuals (hidden = 10)",
+    x = "Predicted",
+    y = "Residual"
+  )
+```
+
+# Tuning Hidden Layer Size
+
+```{r nn-tuning-hidden}
+sizes <- c(5, 10, 20, 40)
+
+results <- lapply(sizes, function(h) {
+  m <- gradboostr_fit(X, y_reg, method = "nn", hidden = h, epochs = 50)
+  pred <- gradboostr_predict(m, X)
+  rmse <- sqrt(mean((pred - y_reg)^2))
+  data.frame(hidden = h, RMSE = rmse)
+})
+
+do.call(rbind, results)
+```
+
+# Visualizing Hidden Layer Tuning
+
+```{r nn-tuning-plot}
+df_tune <- do.call(rbind, results)
+
+ggplot(df_tune, aes(hidden, RMSE)) +
+  geom_line(color = "darkgreen") +
+  geom_point(size = 3) +
+  theme_minimal() +
+  labs(
+    title = "Effect of Hidden Layer Size on NN Performance",
+    x = "Hidden Units",
+    y = "RMSE"
+  )
+```
+
+# NN Training Time Benchmark
+
+```{r nn-benchmark}
+library(microbenchmark)
+
+bench_nn <- microbenchmark(
+  nn10 = gradboostr_fit(X, y_reg, method = "nn", hidden = 10, epochs = 50),
+  nn40 = gradboostr_fit(X, y_reg, method = "nn", hidden = 40, epochs = 50),
+  times = 5
+)
+
+bench_nn
+```
+
+# Benchmark plot
+
+```{r nn-benchmark-plot, fig.width=12, fig.height=9}
+autoplot(bench_nn) +
+  ggtitle("NN Training Time: hidden = 10 vs hidden = 40")
+```
+
+# NN Example with Scaled Inputs
+
+```{r nn-vs-others}
+X_scaled <- scale(X)
+
+m_nn_scaled <- gradboostr_fit(X_scaled, y_reg, method = "nn", hidden = 10, epochs = 50)
+pred_nn_scaled <- gradboostr_predict(m_nn_scaled, X_scaled)
+
+head(pred_nn_scaled,8)
+```
+# Learning Rate Example
+
+```{r gbm-learning-rate}
+# Example data
+X <- matrix(rnorm(300), ncol = 3)
+y_reg <- X[,1] * 2 + rnorm(100)
+
+# Fit models with different learning rates
+m_lr_01 <- gradboostr_fit(X, y_reg, method = "gbm",
+                          learning_rate = 0.1, n_trees = 50)
+
+m_lr_005 <- gradboostr_fit(X, y_reg, method = "gbm",
+                           learning_rate = 0.05, n_trees = 50)
+
+m_lr_001 <- gradboostr_fit(X, y_reg, method = "gbm",
+                           learning_rate = 0.01, n_trees = 50)
+
+# Predictions
+pred_01  <- gradboostr_predict(m_lr_01,  X)
+pred_005 <- gradboostr_predict(m_lr_005, X)
+pred_001 <- gradboostr_predict(m_lr_001, X)
+
+# RMSE helper
+rmse <- function(a, b) sqrt(mean((a - b)^2))
+
+# Results table
+df_lr <- data.frame(
+  learning_rate = c(0.1, 0.05, 0.01),
+  RMSE = c(
+    rmse(pred_01,  y_reg),
+    rmse(pred_005, y_reg),
+    rmse(pred_001, y_reg)
+  )
+)
+
+df_lr
+```
+
+```{r gbm-learning-rate-plot}
+df_lr %>% ggplot() +
+  aes(learning_rate, RMSE) +
+  geom_point(size = 3, color = "darkcyan") +
+  geom_line(color = "violet") +
+  theme_minimal() +
+  labs(
+    title = "Effect of Learning Rate on GBM Performance",
+    x = "Learning Rate",
+    y = "RMSE"
+  )
+```
+
+# Neural Network Learning Rate
+
+```{r nn-learning-rate}
+# Example dataset
+set.seed(1)
+X <- matrix(rnorm(300), ncol = 3)
+y_reg <- X[,1] * 2 + rnorm(100)
+
+# Scale inputs (NNs perform better with scaled features)
+X_scaled <- scale(X)
+
+# Fit NN models with different learning rates
+m_lr_01  <- gradboostr_fit(X_scaled, y_reg, method = "nn",
+                           hidden = 10, epochs = 80, learning_rate = 0.1)
+
+m_lr_005 <- gradboostr_fit(X_scaled, y_reg, method = "nn",
+                           hidden = 10, epochs = 80, learning_rate = 0.05)
+
+m_lr_001 <- gradboostr_fit(X_scaled, y_reg, method = "nn",
+                           hidden = 10, epochs = 80, learning_rate = 0.01)
+# Predictions
+pred_01  <- gradboostr_predict(m_lr_01,  X_scaled)
+pred_005 <- gradboostr_predict(m_lr_005, X_scaled)
+pred_001 <- gradboostr_predict(m_lr_001, X_scaled)
+
+# RMSE helper
+rmse <- function(a, b) sqrt(mean((a - b)^2))
+
+# Results table
+df_lr <- data.frame(
+  learning_rate = c(0.1, 0.05, 0.01),
+  RMSE = c(
+    rmse(pred_01,  y_reg),
+    rmse(pred_005, y_reg),
+    rmse(pred_001, y_reg)
+  )
+)
+
+df_lr
+```
+
+```{r nn-learning-rate-plot}
+df_lr %>% ggplot() +
+  aes(learning_rate, RMSE) +
+  geom_point(size = 3, color = "darkorange") +
+  geom_line(color = "steelblue") +
+  theme_minimal() +
+  labs(
+    title = "Effect of Learning Rate on Neural Network Performance",
+    x = "Learning Rate",
+    y = "RMSE"
+  )
+```
+
+# Effect of Epochs
+
+```{r nn-epochs}
+epochs_grid <- c(40, 80, 160)
+
+res_epochs <- lapply(epochs_grid, function(e) {
+  m <- gradboostr_fit(
+    X_scaled, y_reg,
+    method        = "nn",
+    hidden        = 10,
+    epochs        = e,
+    learning_rate = 0.05
+  )
+  p <- gradboostr_predict(m, X_scaled)
+  data.frame(epochs = e, RMSE = rmse(p, y_reg))
+})
+
+df_epochs <- do.call(rbind, res_epochs)
+df_epochs
+```
+```{r nn-epochs-plot}
+df_epochs %>% ggplot() +
+  aes(epochs, RMSE) +
+  geom_point(size = 3, color = "darkorange") +
+  geom_line(color = "steelblue") +
+  theme_minimal() +
+  labs(
+    title = "Effect of Epochs on NN Performance",
+    x = "Epochs",
+    y = "RMSE"
+  )
+```
+
+# Grid search
+
+```{r nn-grid}
+hidden_grid <- c(5, 10, 20)
+epochs_grid <- c(40, 80)
+lr_grid     <- c(0.1, 0.05, 0.01)
+
+grid <- expand.grid(
+  hidden        = hidden_grid,
+  epochs        = epochs_grid,
+  learning_rate = lr_grid
+)
+
+res_grid <- lapply(seq_len(nrow(grid)), function(i) {
+  h  <- grid$hidden[i]
+  e  <- grid$epochs[i]
+  lr <- grid$learning_rate[i]
+
+  m <- gradboostr_fit(
+    X_scaled, y_reg,
+    method        = "nn",
+    hidden        = h,
+    epochs        = e,
+    learning_rate = lr
+  )
+  p <- gradboostr_predict(m, X_scaled)
+
+  data.frame(
+    hidden        = h,
+    epochs        = e,
+    learning_rate = lr,
+    RMSE          = rmse(p, y_reg)
+  )
+})
+
+df_grid <- do.call(rbind, res_grid)
+df_grid
+```
+
+```{r Best-grid}
+df_grid[which.min(df_grid$RMSE), ]
+```
+
+```{r nn-grid-heatmap}
+df_grid %>% ggplot() +
+  aes(hidden, epochs, fill = RMSE) +
+  geom_tile(color = "grey70") +
+  facet_wrap(~ learning_rate) +
+  scale_fill_viridis_c() +
+  theme_minimal() +
+  labs(
+    title = "NN Grid Search: Hidden, Epochs, Learning Rate",
+    x = "Hidden Units",
+    y = "Epochs",
+    fill = "RMSE"
+  )
+```
+

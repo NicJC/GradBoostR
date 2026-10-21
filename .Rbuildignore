@@ -1,4 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^doc$
+^docs$
 ^Meta$
+^\.github$
+

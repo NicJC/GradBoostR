@@ -1,0 +1,27 @@
+{
+    "id": "6861D3B4",
+    "path": "C:/R/Package/GradBoostR/vignettes/GradBoostR.Rmd",
+    "project_path": "vignettes/GradBoostR.Rmd",
+    "type": "r_markdown",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1792569106305.0,
+    "source_on_save": false,
+    "relative_order": 1,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "12,50",
+        "scrollLine": "0",
+        "last_setup_crc32": ""
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1792569153,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1792575253137,
+    "read_only": false,
+    "read_only_alternatives": []
+}

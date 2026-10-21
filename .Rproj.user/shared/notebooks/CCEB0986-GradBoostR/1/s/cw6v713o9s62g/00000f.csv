@@ -1,0 +1,3 @@
+"0","stump <- fit_stump(X, y)"
+"2","Error in fit_stump(X, y) : could not find function ""fit_stump""
+"

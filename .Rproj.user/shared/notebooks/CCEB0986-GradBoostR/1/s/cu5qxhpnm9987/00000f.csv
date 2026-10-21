@@ -1,0 +1,17 @@
+"0",""
+"0","ggplot(df, aes(X1, y, color = X2)) +"
+"0","  geom_point(alpha = 0.7) +"
+"0","  scale_color_gradient2(low = ""blue"", high = ""red"", mid = ""white"") +"
+"0","  theme_minimal() +"
+"0","  labs("
+"0","    title = ""Synthetic Regression Data"","
+"0","    subtitle = ""Two regions defined by the sign of X1"","
+"0","    x = ""X1"","
+"0","    y = ""Target y"","
+"0","    color = ""X2"""
+"0","  )"
+"1","[1m[33mError[39m in `ggplot()`:[22m
+[38;5;232m[33m![38;5;232m `data` cannot be a function.
+[36mℹ[38;5;232m Have you misspelled the `data` argument in `ggplot()`?[39m
+[90mRun `]8;;x-r-run:rlang::last_trace()rlang::last_trace()]8;;` to see where the error occurred.[39m
+"
