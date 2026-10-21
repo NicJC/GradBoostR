@@ -1,13 +1,24 @@
+url: https://nicjc.github.io/GradBoostR/
+
 template:
   bootstrap: 5
 
 navbar:
   structure:
-    left:
-      - text: "Reference"
-        href: "reference/index.html"
-      - text: "Articles"
-        href: "articles/index.html"
-      - text: "News"
-        href: "news/index.html"
+    left: [reference, articles, news]
+
+reference:
+  - title: "Reference"
+    contents:
+      - starts_with("")
+
+articles:
+  - title: "Articles"
+    contents:
+      - starts_with("")
+
+news:
+  - title: "News"
+    contents:
+      - "news"
 
