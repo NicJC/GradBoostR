@@ -33,6 +33,10 @@ jobs:
           Rscript -e 'install.packages(c("pak", "pkgdown"))'
           Rscript -e 'pak::local_install_deps(upgrade = TRUE)'
 
+      - name: Test package installation
+        run: |
+          Rscript -e 'install.packages(".", repos = NULL, type = "source")'
+
       - name: Build site
         run: |
           Rscript -e 'pkgdown::build_site()'
