@@ -29,18 +29,15 @@ jobs:
             libxml2-dev
 
       - name: Install R dependencies
-        working-directory: GradBoostR
         run: |
           Rscript -e 'install.packages(c("pak", "pkgdown"))'
           Rscript -e 'pak::local_install_deps(upgrade = TRUE)'
 
       - name: Test package installation
-        working-directory: GradBoostR
         run: |
           Rscript -e 'install.packages(".", repos = NULL, type = "source")'
 
       - name: Build site
-        working-directory: GradBoostR
         run: |
           Rscript -e 'pkgdown::build_site()'
 
@@ -48,4 +45,4 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: GradBoostR/docs
+          folder: docs
