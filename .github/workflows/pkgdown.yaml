@@ -24,8 +24,8 @@ jobs:
 
       - name: Install R dependencies
         run: |
-          Rscript -e 'install.packages(c("pkgdown", "devtools", "Rcpp"))'
-          Rscript -e 'devtools::install_deps(dependencies = TRUE)'
+          Rscript -e 'install.packages(c("pak", "pkgdown"))'
+          Rscript -e 'pak::local_install_deps(upgrade = TRUE)'
 
       - name: Build site
         run: |
