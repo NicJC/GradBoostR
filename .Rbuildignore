@@ -3,4 +3,7 @@
 ^docs$
 ^Meta$
 ^\.github$
+^doc$
+^doc/GradBoostR_cache$
+^doc/GradBoostR_cache/html$
 
