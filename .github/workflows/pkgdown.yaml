@@ -3,9 +3,13 @@ name: pkgdown
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:   # manual trigger in Actions UI
 
 jobs:
   pkgdown:
+    name: Build and deploy pkgdown site
     runs-on: ubuntu-latest
     env:
       R_LIBS_USER: ${{ runner.temp }}/Rlib
