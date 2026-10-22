@@ -1,4 +1,4 @@
-# GradBoostR <img src="https://github.com/NicJC/GradBoostR/blob/main/man/figures/GradBoostR.png" align="right" width="120" />
+
 
 <!-- Badges -->
 [![CRAN Status](https://www.r-pkg.org/badges/version/GradBoostR)](https://CRAN.R-project.org/package=GradBoostR)
@@ -22,7 +22,7 @@ The package is designed for **speed**, **simplicity**, and **clean R interfaces*
 
 [![pkgdown site](https://img.shields.io/badge/docs-pkgdown-blue.svg)](https://nicjc.github.io/GradBoostR/)
 
-![Short description of figure](man/figures/GradBoostR.png){width=120px}
+<img src="man/figures/GradBoostR.png" style="width:120px; border-radius:8px;">
 
 
 ## Installation
