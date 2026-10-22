@@ -330,7 +330,7 @@ bench_gbm
 ```
 
        user  system elapsed 
-       0.00    0.00    0.01 
+       0.02    0.00    0.00 
 
 ``` r
 
@@ -338,7 +338,7 @@ bench_rf
 ```
 
        user  system elapsed 
-       0.05    0.00    0.06 
+       0.06    0.00    0.06 
 
 ``` r
 

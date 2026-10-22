@@ -36,12 +36,12 @@ jobs:
           mkdir -p "${R_LIBS_USER}"
           Rscript -e '.libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths())); cat("libPaths after prep:\\n"); print(.libPaths())'
 
-      - name: Install pkgdown and vignette packages into $R_LIBS_USER
+      - name: Install pkgdown, preview and vignette packages (non-interactive)
         run: |
-          Rscript -e '.libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths())); install.packages(c("pak","pkgdown","ggplot2","tidyr","knitr","rmarkdown"), repos="https://cloud.r-project.org")'
+          Rscript -e '.libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths())); install.packages(c("pak","pkgdown","ggplot2","tidyr","knitr","rmarkdown","nanonext"), repos="https://cloud.r-project.org")'
           Rscript -e '.libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths())); pak::local_install_deps(upgrade = TRUE)'
 
-      - name: Install compiled dependencies into $R_LIBS_USER
+      - name: Install compiled dependencies
         run: |
           Rscript -e '.libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths())); install.packages(c("Rcpp","RcppArmadillo"), repos="https://cloud.r-project.org")'
 
