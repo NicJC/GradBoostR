@@ -17,10 +17,11 @@ Imports: Rcpp
 LinkingTo: Rcpp, RcppArmadillo
 Config/roxygen2/version: 8.1.0
 VignetteBuilder: knitr
-Suggests: 
-    ggplot2,
-    tidyr,
-    rmarkdown,
-    knitr
+Suggests:
+  ggplot2,
+  tidyr,
+  knitr,
+  rmarkdown,
+  nanonext
 Roxygen: list(markdown = TRUE)
 URL: https://nicjc.github.io/GradBoostR/

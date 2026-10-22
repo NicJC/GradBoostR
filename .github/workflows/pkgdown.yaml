@@ -13,18 +13,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Debug directory structure
-        run: |
-          echo "Current directory:"
-          pwd
-          echo "Directory contents:"
-          ls -R .
-
-      - uses: r-lib/actions/setup-r@v2
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2
         with:
           use-public-rspm: true
 
-      - uses: r-lib/actions/setup-pandoc@v2
+      - name: Setup pandoc
+        uses: r-lib/actions/setup-pandoc@v2
 
       - name: Install system dependencies
         run: |
@@ -34,9 +29,9 @@ jobs:
       - name: Prepare R library
         run: |
           mkdir -p "${R_LIBS_USER}"
-          Rscript -e '.libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths())); cat("libPaths after prep:\\n"); print(.libPaths())'
+          Rscript -e '.libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths())); cat("libPaths:\\n"); print(.libPaths())'
 
-      - name: Install pkgdown, preview and vignette packages (non-interactive)
+      - name: Install pkgdown, vignette and preview packages (non-interactive)
         run: |
           Rscript -e '.libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths())); install.packages(c("pak","pkgdown","ggplot2","tidyr","knitr","rmarkdown","nanonext"), repos="https://cloud.r-project.org")'
           Rscript -e '.libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths())); pak::local_install_deps(upgrade = TRUE)'
@@ -45,7 +40,7 @@ jobs:
         run: |
           Rscript -e '.libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths())); install.packages(c("Rcpp","RcppArmadillo"), repos="https://cloud.r-project.org")'
 
-      - name: Install package into same library with pak
+      - name: Install package with pak
         run: |
           Rscript -e '.libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths())); pak::local_install(".", upgrade = TRUE)'
 
@@ -62,5 +57,3 @@ jobs:
         with:
           branch: gh-pages
           folder: docs
-
-
