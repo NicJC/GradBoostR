@@ -36,7 +36,7 @@ jobs:
           mkdir -p "${R_LIBS_USER}"
           Rscript -e '.libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths())); print(.libPaths())'
 
-      - name: Install pkgdown, vignette and preview packages
+      - name: Install pkgdown + vignette deps + nanonext
         run: |
           Rscript -e '.libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths())); install.packages(c("pak","pkgdown","ggplot2","tidyr","knitr","rmarkdown","nanonext"), repos="https://cloud.r-project.org")'
           Rscript -e '.libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths())); pak::local_install_deps(upgrade = TRUE)'
@@ -62,3 +62,4 @@ jobs:
         with:
           branch: gh-pages
           folder: docs
+
