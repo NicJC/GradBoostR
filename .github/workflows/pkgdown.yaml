@@ -5,14 +5,15 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-  workflow_dispatch:   # manual trigger in Actions UI
+  workflow_dispatch:
 
 jobs:
   pkgdown:
     name: Build and deploy pkgdown site
     runs-on: ubuntu-latest
+
     env:
-      R_LIBS_USER: ${{ runner.temp }}/Rlib
+      R_LIBS_USER: ${{ github.workspace }}/Rlib
 
     steps:
       - uses: actions/checkout@v3
@@ -33,9 +34,9 @@ jobs:
       - name: Prepare R library
         run: |
           mkdir -p "${R_LIBS_USER}"
-          Rscript -e '.libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths())); cat("libPaths:\\n"); print(.libPaths())'
+          Rscript -e '.libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths())); print(.libPaths())'
 
-      - name: Install pkgdown, vignette and preview packages (non-interactive)
+      - name: Install pkgdown, vignette and preview packages
         run: |
           Rscript -e '.libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths())); install.packages(c("pak","pkgdown","ggplot2","tidyr","knitr","rmarkdown","nanonext"), repos="https://cloud.r-project.org")'
           Rscript -e '.libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths())); pak::local_install_deps(upgrade = TRUE)'
@@ -44,15 +45,15 @@ jobs:
         run: |
           Rscript -e '.libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths())); install.packages(c("Rcpp","RcppArmadillo"), repos="https://cloud.r-project.org")'
 
-      - name: Install package with pak
+      - name: Install GradBoostR with pak
         run: |
           Rscript -e '.libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths())); pak::local_install(".", upgrade = TRUE)'
 
-      - name: Verify pkgdown and GradBoostR installed
+      - name: Verify installation
         run: |
-          Rscript -e '.libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths())); cat("libPaths:\\n"); print(.libPaths()); cat("\\npkgdown present: "); print(requireNamespace("pkgdown", quietly=TRUE)); if (requireNamespace("pkgdown", quietly=TRUE)) print(packageVersion("pkgdown")); cat("\\nGradBoostR installed: "); print("GradBoostR" %in% rownames(installed.packages())); print(installed.packages()[grepl("^GradBoostR$", installed.packages()[,"Package"]), c("Package","LibPath")])'
+          Rscript -e '.libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths())); print(.libPaths()); print(requireNamespace("pkgdown", quietly=TRUE)); print("GradBoostR" %in% rownames(installed.packages()))'
 
-      - name: Build site
+      - name: Build pkgdown site
         run: |
           Rscript -e '.libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths())); pkgdown::build_site()'
 
