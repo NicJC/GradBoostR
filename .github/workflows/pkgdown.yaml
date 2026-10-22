@@ -7,6 +7,8 @@ on:
 jobs:
   pkgdown:
     runs-on: ubuntu-latest
+    env:
+      R_LIBS_USER: ${{ runner.temp }}/Rlib
 
     steps:
       - uses: actions/checkout@v3
@@ -29,28 +31,31 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential g++ libstdc++-13-dev libcurl4-openssl-dev libssl-dev libxml2-dev
 
-      - name: Install R dependencies (pkgdown + vignette)
+      - name: Prepare R library
         run: |
-          Rscript -e 'install.packages(c("pak","pkgdown","ggplot2","tidyr","knitr","rmarkdown"), repos = "https://cloud.r-project.org")'
-          Rscript -e 'pak::local_install_deps(upgrade = TRUE)'
+          mkdir -p "${R_LIBS_USER}"
+          Rscript -e '.libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths())); cat("libPaths after prep:\\n"); print(.libPaths())'
 
-      - name: Install compiled dependencies
+      - name: Install pkgdown and vignette packages into $R_LIBS_USER
         run: |
-          Rscript -e 'install.packages(c("Rcpp","RcppArmadillo"), repos = "https://cloud.r-project.org")'
+          Rscript -e '.libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths())); install.packages(c("pak","pkgdown","ggplot2","tidyr","knitr","rmarkdown"), repos="https://cloud.r-project.org")'
+          Rscript -e '.libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths())); pak::local_install_deps(upgrade = TRUE)'
 
-      - name: Install package with pak
+      - name: Install compiled dependencies into $R_LIBS_USER
         run: |
-          Rscript -e 'pak::local_install(".", upgrade = TRUE)'
+          Rscript -e '.libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths())); install.packages(c("Rcpp","RcppArmadillo"), repos="https://cloud.r-project.org")'
 
-      - name: Verify pkgdown and package installed
+      - name: Install package into same library with pak
         run: |
-          Rscript -e 'cat("pkgdown present: "); print(requireNamespace("pkgdown", quietly=TRUE)); if (requireNamespace("pkgdown", quietly=TRUE)) print(packageVersion("pkgdown"))'
-          Rscript -e 'cat("GradBoostR installed: "); print("GradBoostR" %in% rownames(installed.packages())); print(installed.packages()[grepl("^GradBoostR$", installed.packages()[,"Package"]), c("Package","LibPath")])'
-          Rscript -e 'cat("Library paths:\\n"); print(.libPaths())'
+          Rscript -e '.libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths())); pak::local_install(".", upgrade = TRUE)'
+
+      - name: Verify pkgdown and GradBoostR installed
+        run: |
+          Rscript -e '.libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths())); cat("libPaths:\\n"); print(.libPaths()); cat("\\npkgdown present: "); print(requireNamespace("pkgdown", quietly=TRUE)); if (requireNamespace("pkgdown", quietly=TRUE)) print(packageVersion("pkgdown")); cat("\\nGradBoostR installed: "); print("GradBoostR" %in% rownames(installed.packages())); print(installed.packages()[grepl("^GradBoostR$", installed.packages()[,"Package"]), c("Package","LibPath")])'
 
       - name: Build site
         run: |
-          Rscript -e 'pkgdown::build_site()'
+          Rscript -e '.libPaths(c(Sys.getenv("R_LIBS_USER"), .libPaths())); pkgdown::build_site()'
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
