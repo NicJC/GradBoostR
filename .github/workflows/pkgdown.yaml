@@ -46,6 +46,7 @@ jobs:
         run: |
           Rscript -e 'cat("pkgdown present: "); print(requireNamespace("pkgdown", quietly=TRUE)); if (requireNamespace("pkgdown", quietly=TRUE)) print(packageVersion("pkgdown"))'
           Rscript -e 'cat("GradBoostR installed: "); print("GradBoostR" %in% rownames(installed.packages())); print(installed.packages()[grepl("^GradBoostR$", installed.packages()[,"Package"]), c("Package","LibPath")])'
+          Rscript -e 'cat("Library paths:\\n"); print(.libPaths())'
 
       - name: Build site
         run: |
