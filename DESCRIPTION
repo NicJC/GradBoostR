@@ -1,21 +1,20 @@
 Package: GradBoostR
 Type: Package
-Title: Fast Machine Learning with Gradient Boosting, Random Forests,
-    and Neural Networks
+Title: Gradient Boosting, Random Forests, and Neural Networks
 Version: 0.1.0
 Authors@R: c(
     person(
-      "Nic", "Coxen",
-      email = "nicjcoxen@gmail.com",
-      role = c("aut", "cre")
+        given = "Nic",
+        family = "Coxen",
+        email = "nicjcoxen@gmail.com",
+        role = c("aut", "cre")
     )
-)
+    )
 Description: Provides implementations of gradient boosting,
-    random forest regression, neural network regression,
-    decision stumps, and binary classification methods.
-    The package includes a unified modeling interface,
-    cross-validation utilities, prediction functions,
-    and high-performance native implementations using
+    random forest regression, neural network regression, decision
+    stumps, and binary random forest classification. The package
+    provides a unified modelling interface, prediction functions,
+    cross-validation examples, and native implementations using
     'Rcpp' and 'RcppArmadillo'.
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -24,16 +23,18 @@ Imports:
 LinkingTo:
     Rcpp,
     RcppArmadillo
-VignetteBuilder: knitr
 Suggests:
     ggplot2,
-    tidyr,
     knitr,
+    nanonext,
     rmarkdown,
-    nanonext
-URL: https://nicjc.github.io/GradBoostR/,
-     https://github.com/NicJC/GradBoostR
-BugReports: https://github.com/NicJC/GradBoostR/issues
+    testthat,
+    tidyr
+VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+URL: https://nicjc.github.io/GradBoostR/,
+    https://github.com/NicJC/GradBoostR
+BugReports: https://github.com/NicJC/GradBoostR/issues
 Config/Needs/website:
     pkgdown
