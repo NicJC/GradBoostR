@@ -8,3 +8,5 @@
   : Train a GradBoostR model
 - [`gradboostr_predict()`](https://nicjc.github.io/GradBoostR/reference/gradboostr_predict.md)
   : Predict using a GradBoostR model
+- [`rf_class_predict_prob_fast()`](https://nicjc.github.io/GradBoostR/reference/rf_class_predict_prob_fast.md)
+  : Random Forest Classification Probabilities

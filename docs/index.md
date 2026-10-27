@@ -1,13 +1,3 @@
-# GradBoostR ![](https://github.com/NicJC/GradBoostR/blob/main/man/figures/GradBoostR.png)
-
-[![CRAN
-Status](https://www.r-pkg.org/badges/version/GradBoostR)](https://CRAN.R-project.org/package=GradBoostR)
-[![CRAN
-Downloads](https://cranlogs.r-pkg.org/badges/GradBoostR)](https://cranlogs.r-pkg.org/badges/GradBoostR)
-[![R-CMD-check](https://github.com/nicjc/GradBoostR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/nicjc/GradBoostR/actions/workflows/R-CMD-check.yaml)
-[![License:
-MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://nicjc.github.io/GradBoostR/LICENSE)
-
 ------------------------------------------------------------------------
 
 ## Overview
@@ -26,6 +16,8 @@ interfaces**, while leveraging optimized C++ code via RcppArmadillo.
 
 [![pkgdown
 site](https://img.shields.io/badge/docs-pkgdown-blue.svg)](https://nicjc.github.io/GradBoostR/)
+
+![](reference/figures/GradBoostR.png)
 
 ## Installation
 
