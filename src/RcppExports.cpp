@@ -110,6 +110,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// rf_class_predict_prob_fast
+arma::vec rf_class_predict_prob_fast(const arma::mat& X, Rcpp::List forest_list);
+RcppExport SEXP _GradBoostR_rf_class_predict_prob_fast(SEXP XSEXP, SEXP forest_listSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type forest_list(forest_listSEXP);
+    rcpp_result_gen = Rcpp::wrap(rf_class_predict_prob_fast(X, forest_list));
+    return rcpp_result_gen;
+END_RCPP
+}
 // rf_class_predict_fast
 arma::vec rf_class_predict_fast(const arma::mat& X, Rcpp::List forest_list);
 RcppExport SEXP _GradBoostR_rf_class_predict_fast(SEXP XSEXP, SEXP forest_listSEXP) {
@@ -183,6 +195,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_GradBoostR_nn_predict_model", (DL_FUNC) &_GradBoostR_nn_predict_model, 2},
     {"_GradBoostR_nn_predict_arma", (DL_FUNC) &_GradBoostR_nn_predict_arma, 6},
     {"_GradBoostR_rf_class_fit_fast", (DL_FUNC) &_GradBoostR_rf_class_fit_fast, 6},
+    {"_GradBoostR_rf_class_predict_prob_fast", (DL_FUNC) &_GradBoostR_rf_class_predict_prob_fast, 2},
     {"_GradBoostR_rf_class_predict_fast", (DL_FUNC) &_GradBoostR_rf_class_predict_fast, 2},
     {"_GradBoostR_rf_fit_fast", (DL_FUNC) &_GradBoostR_rf_fit_fast, 5},
     {"_GradBoostR_rf_predict_fast", (DL_FUNC) &_GradBoostR_rf_predict_fast, 2},

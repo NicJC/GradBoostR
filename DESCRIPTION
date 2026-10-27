@@ -9,6 +9,7 @@ Authors@R: c(
       role = c("aut", "cre")
     )
   )
+Maintainer: Nic Coxen <nicjcoxen@gmail.com>
 Description: Fast ML engine with boosting, random forests, and neural nets.
 License: GPL-3
 Encoding: UTF-8

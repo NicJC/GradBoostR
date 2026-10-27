@@ -6,4 +6,5 @@
 ^doc$
 ^doc/GradBoostR_cache$
 ^doc/GradBoostR_cache/html$
+^_pkgdown\\.yml$
 

@@ -1,7 +1,31 @@
+# RStudio
 .Rproj.user/
+
+# R session files
 .Rhistory
 .RData
 .Ruserdata
+
+# R projects
 *.Rproj
 
+# Package builds
+*.tar.gz
+
+# Compiled code
+src/*.o
+src/*.obj
+src/*.dll
+src/*.so
+src/*.dylib
+
+# Generated vignette outputs
+vignettes/*.html
+vignettes/*.R
+
+# pkgdown site
+docs/
+
+# macOS
+.DS_Store
 
