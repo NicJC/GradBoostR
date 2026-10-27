@@ -26,3 +26,5 @@ Suggests:
   nanonext
 Roxygen: list(markdown = TRUE)
 URL: https://nicjc.github.io/GradBoostR/
+Config/Needs/website:
+    pkgdown
