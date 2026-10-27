@@ -1,0 +1,46 @@
+------------------------------------------------------------------------
+
+## Overview
+
+**GradBoostR** is a fast, lightweight machine learning package for R
+that implements:
+
+- **Random Forests** (regression + classification)  
+- **Gradient Boosting Machines (GBM)**  
+- **Neural Networks (NN)** with Armadillo backend
+
+The package is designed for **speed**, **simplicity**, and **clean R
+interfaces**, while leveraging optimized C++ code via RcppArmadillo.
+
+------------------------------------------------------------------------
+
+[![pkgdown
+site](https://img.shields.io/badge/docs-pkgdown-blue.svg)](https://nicjc.github.io/GradBoostR/)
+
+![](reference/figures/GradBoostR.png)
+
+## Installation
+
+### From CRAN (once published)
+
+\`\`\`r install.packages(“GradBoostR”)
+
+# Package index
+
+## Reference
+
+- [`fit_stump()`](https://nicjc.github.io/GradBoostR/reference/fit_stump.md)
+  : Fit a decision stump
+- [`gradboostr_fit()`](https://nicjc.github.io/GradBoostR/reference/gradboostr_fit.md)
+  : Train a GradBoostR model
+- [`gradboostr_predict()`](https://nicjc.github.io/GradBoostR/reference/gradboostr_predict.md)
+  : Predict using a GradBoostR model
+- [`rf_class_predict_prob_fast()`](https://nicjc.github.io/GradBoostR/reference/rf_class_predict_prob_fast.md)
+  : Random Forest Classification Probabilities
+
+# Articles
+
+### Articles
+
+- [Introduction to
+  GradBoostR](https://nicjc.github.io/GradBoostR/articles/GradBoostR.md):
