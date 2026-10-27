@@ -5,8 +5,8 @@
 **GradBoostR** is a fast, lightweight machine learning package for R
 that implements:
 
-- **Random Forests** (regression + classification)  
-- **Gradient Boosting Machines (GBM)**  
+- **Random Forests** (regression + classification)\
+- **Gradient Boosting Machines (GBM)**\
 - **Neural Networks (NN)** with Armadillo backend
 
 The package is designed for **speed**, **simplicity**, and **clean R
