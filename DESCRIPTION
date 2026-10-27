@@ -1,6 +1,7 @@
 Package: GradBoostR
 Type: Package
-Title: Gradient Boosting + RF + NN Engine
+Title: Fast Machine Learning with Gradient Boosting, Random Forests,
+    and Neural Networks
 Version: 0.1.0
 Authors@R: c(
     person(
@@ -8,23 +9,31 @@ Authors@R: c(
       email = "nicjcoxen@gmail.com",
       role = c("aut", "cre")
     )
-  )
-Maintainer: Nic Coxen <nicjcoxen@gmail.com>
-Description: Fast ML engine with boosting, random forests, and neural nets.
+)
+Description: Provides implementations of gradient boosting,
+    random forest regression, neural network regression,
+    decision stumps, and binary classification methods.
+    The package includes a unified modeling interface,
+    cross-validation utilities, prediction functions,
+    and high-performance native implementations using
+    'Rcpp' and 'RcppArmadillo'.
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
-Imports: Rcpp
-LinkingTo: Rcpp, RcppArmadillo
-Config/roxygen2/version: 8.1.0
+Imports:
+    Rcpp
+LinkingTo:
+    Rcpp,
+    RcppArmadillo
 VignetteBuilder: knitr
 Suggests:
-  ggplot2,
-  tidyr,
-  knitr,
-  rmarkdown,
-  nanonext
+    ggplot2,
+    tidyr,
+    knitr,
+    rmarkdown,
+    nanonext
+URL: https://nicjc.github.io/GradBoostR/,
+     https://github.com/NicJC/GradBoostR
+BugReports: https://github.com/NicJC/GradBoostR/issues
 Roxygen: list(markdown = TRUE)
-URL: https://nicjc.github.io/GradBoostR/
 Config/Needs/website:
     pkgdown
