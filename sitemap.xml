@@ -1,11 +1,11 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://nicjc.github.io/GradBoostR/404.html</loc></url>
-<url><loc>https://nicjc.github.io/GradBoostR/LICENSE-text.html</loc></url>
-<url><loc>https://nicjc.github.io/GradBoostR/LICENSE.html</loc></url>
 <url><loc>https://nicjc.github.io/GradBoostR/articles/GradBoostR.html</loc></url>
 <url><loc>https://nicjc.github.io/GradBoostR/articles/index.html</loc></url>
 <url><loc>https://nicjc.github.io/GradBoostR/authors.html</loc></url>
 <url><loc>https://nicjc.github.io/GradBoostR/index.html</loc></url>
+<url><loc>https://nicjc.github.io/GradBoostR/LICENSE-text.html</loc></url>
+<url><loc>https://nicjc.github.io/GradBoostR/LICENSE.html</loc></url>
 <url><loc>https://nicjc.github.io/GradBoostR/reference/fit_stump.html</loc></url>
 <url><loc>https://nicjc.github.io/GradBoostR/reference/gradboostr_fit.html</loc></url>
 <url><loc>https://nicjc.github.io/GradBoostR/reference/gradboostr_predict.html</loc></url>
