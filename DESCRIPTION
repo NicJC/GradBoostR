@@ -26,15 +26,14 @@ LinkingTo:
 Suggests:
     ggplot2,
     knitr,
-    nanonext,
     rmarkdown,
     testthat,
     tidyr
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 URL: https://nicjc.github.io/GradBoostR/,
     https://github.com/NicJC/GradBoostR
 BugReports: https://github.com/NicJC/GradBoostR/issues
 Config/Needs/website:
     pkgdown
+Config/roxygen2/version: 8.1.0
