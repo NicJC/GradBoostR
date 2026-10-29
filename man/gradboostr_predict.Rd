@@ -2,22 +2,27 @@
 % Please edit documentation in R/gradboostr_predict.R
 \name{gradboostr_predict}
 \alias{gradboostr_predict}
-\title{Predict using a GradBoostR model}
+\title{Generate predictions from a GradBoostR model}
 \usage{
 gradboostr_predict(object, newdata, type = c("response", "prob"), ...)
 }
 \arguments{
-\item{object}{A gradboostr_model from gradboostr_fit().}
+\item{object}{A fitted object created by \code{\link[=gradboostr_fit]{gradboostr_fit()}}.}
 
-\item{newdata}{Matrix or data.frame of features.}
+\item{newdata}{A numeric matrix or data frame containing predictor values.}
 
-\item{type}{"response" or "prob" (classification only).}
+\item{type}{Prediction type. Use \code{"response"} for regression predictions
+or classification labels. Use \code{"prob"} for classification probabilities.}
 
-\item{...}{Not used.}
+\item{...}{Additional arguments reserved for future use.}
 }
 \value{
-Numeric vector (regression), factor (classification), or probability matrix.
+For regression models, a numeric vector with one prediction per
+observation. For classification models, either a factor of predicted
+classes when \code{type = "response"} or a numeric probability matrix when
+\code{type = "prob"}.
 }
 \description{
-Predict using a GradBoostR model
+Generates regression predictions, predicted classes, or class
+probabilities from a model fitted with \code{\link[=gradboostr_fit]{gradboostr_fit()}}.
 }

@@ -7,16 +7,17 @@
 gradboostr_fit(x, y, method = c("gbm", "rf", "rf_class", "nn"), ...)
 }
 \arguments{
-\item{x}{Matrix or data.frame of features.}
+\item{x}{A numeric matrix or data frame of predictor variables.}
 
-\item{y}{Numeric (regression) or factor/integer (classification).}
+\item{y}{A numeric response for regression or a factor/integer response
+for classification.}
 
-\item{method}{One of: "gbm", "rf", "rf_class", "nn".}
+\item{method}{One of \code{"gbm"}, \code{"rf"}, \code{"rf_class"}, or \code{"nn"}.}
 
-\item{...}{Additional hyperparameters passed to the underlying C++ engine.}
+\item{...}{Additional hyperparameters passed to the selected model engine.}
 }
 \value{
-A gradboostr_model object.
+A fitted object of class \code{"gradboostr_model"}.
 }
 \description{
 Train a GradBoostR model

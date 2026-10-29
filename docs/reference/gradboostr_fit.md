@@ -12,20 +12,21 @@ gradboostr_fit(x, y, method = c("gbm", "rf", "rf_class", "nn"), ...)
 
 - x:
 
-  Matrix or data.frame of features.
+  A numeric matrix or data frame of predictor variables.
 
 - y:
 
-  Numeric (regression) or factor/integer (classification).
+  A numeric response for regression or a factor/integer response for
+  classification.
 
 - method:
 
-  One of: "gbm", "rf", "rf_class", "nn".
+  One of `"gbm"`, `"rf"`, `"rf_class"`, or `"nn"`.
 
 - ...:
 
-  Additional hyperparameters passed to the underlying C++ engine.
+  Additional hyperparameters passed to the selected model engine.
 
 ## Value
 
-A gradboostr_model object.
+A fitted object of class `"gradboostr_model"`.

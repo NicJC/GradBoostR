@@ -22,7 +22,7 @@ The package is designed for **speed**, **simplicity**, and **clean R interfaces*
 
 [![pkgdown site](https://img.shields.io/badge/docs-pkgdown-blue.svg)](https://nicjc.github.io/GradBoostR/)
 
-<img src="man/figures/GradBoostR.png" style="width:120px; border-radius:8px;">
+<img src="man/figures/GradBoostR.png" alt="GradBoostR package logo" style="width:120px; border-radius:8px;">
 
 
 ## Installation

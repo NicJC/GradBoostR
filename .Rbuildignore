@@ -8,3 +8,4 @@
 ^doc/GradBoostR_cache/html$
 ^LICENSE\.md$
 ^_pkgdown\.yml$
+^cran-comments\.md$

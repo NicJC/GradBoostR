@@ -19,6 +19,7 @@
 <li class="nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/NicJC/GradBoostR/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -28,7 +29,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Train a GradBoostR model</h1>
-
+      <small class="dont-index">Source: <a href="https://github.com/NicJC/GradBoostR/blob/HEAD/R/gradboostr_fit.R" class="external-link"><code>R/gradboostr_fit.R</code></a></small>
       <div class="d-none name"><code>gradboostr_fit.Rd</code></div>
     </div>
 
@@ -46,24 +47,25 @@
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>Matrix or data.frame of features.</p></dd>
+<dd><p>A numeric matrix or data frame of predictor variables.</p></dd>
 
 
 <dt id="arg-y">y<a class="anchor" aria-label="anchor" href="#arg-y"></a></dt>
-<dd><p>Numeric (regression) or factor/integer (classification).</p></dd>
+<dd><p>A numeric response for regression or a factor/integer response
+for classification.</p></dd>
 
 
 <dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
-<dd><p>One of: "gbm", "rf", "rf_class", "nn".</p></dd>
+<dd><p>One of <code>"gbm"</code>, <code>"rf"</code>, <code>"rf_class"</code>, or <code>"nn"</code>.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Additional hyperparameters passed to the underlying C++ engine.</p></dd>
+<dd><p>Additional hyperparameters passed to the selected model engine.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A gradboostr_model object.</p>
+    <p>A fitted object of class <code>"gradboostr_model"</code>.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
