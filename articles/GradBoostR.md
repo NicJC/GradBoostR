@@ -834,7 +834,9 @@ ggplot(gbm_learning_rate_results, aes(LearningRate, MeanRMSE)) +
   )
 ```
 
-![](GradBoostR_files/figure-html/gbm-learning-rate-plot-1.png)
+![Cross-validated gradient boosting RMSE across candidate learning
+rates, with error bars showing variability across
+folds.](GradBoostR_files/figure-html/gbm-learning-rate-plot-1.png)
 
 #### Neural network learning rate
 
@@ -936,7 +938,9 @@ ggplot(nn_learning_rate_results, aes(LearningRate, MeanRMSE)) +
   )
 ```
 
-![](GradBoostR_files/figure-html/nn-learning-rate-plot-1.png)
+![Cross-validated neural network RMSE across candidate learning rates,
+with error bars showing variability across
+folds.](GradBoostR_files/figure-html/nn-learning-rate-plot-1.png)
 
 ### Gradient boosting grid search
 

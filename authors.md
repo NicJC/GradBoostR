@@ -7,7 +7,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/NicJC/GradBoostR/blob/HEAD/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/NicJC/GradBoostR/blob/main/DESCRIPTION)
 
 Coxen N (2026). *GradBoostR: Gradient Boosting, Random Forests, and
 Neural Networks*. R package version 0.1.0,
