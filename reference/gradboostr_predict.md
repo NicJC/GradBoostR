@@ -1,6 +1,8 @@
-# Predict using a GradBoostR model
+# Generate predictions from a GradBoostR model
 
-Predict using a GradBoostR model
+Generates regression predictions, predicted classes, or class
+probabilities from a model fitted with
+[`gradboostr_fit()`](https://nicjc.github.io/GradBoostR/reference/gradboostr_fit.md).
 
 ## Usage
 
@@ -12,21 +14,25 @@ gradboostr_predict(object, newdata, type = c("response", "prob"), ...)
 
 - object:
 
-  A gradboostr_model from gradboostr_fit().
+  A fitted object created by
+  [`gradboostr_fit()`](https://nicjc.github.io/GradBoostR/reference/gradboostr_fit.md).
 
 - newdata:
 
-  Matrix or data.frame of features.
+  A numeric matrix or data frame containing predictor values.
 
 - type:
 
-  "response" or "prob" (classification only).
+  Prediction type. Use `"response"` for regression predictions or
+  classification labels. Use `"prob"` for classification probabilities.
 
 - ...:
 
-  Not used.
+  Additional arguments reserved for future use.
 
 ## Value
 
-Numeric vector (regression), factor (classification), or probability
-matrix.
+For regression models, a numeric vector with one prediction per
+observation. For classification models, either a factor of predicted
+classes when `type = "response"` or a numeric probability matrix when
+`type = "prob"`.
