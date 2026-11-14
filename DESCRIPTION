@@ -10,12 +10,21 @@ Authors@R: c(
         role = c("aut", "cre")
     )
     )
-Description: Provides implementations of gradient boosting,
-    random forest regression, neural network regression, decision
-    stumps, and binary random forest classification. The package
-    provides a unified modelling interface, prediction functions,
-    cross-validation examples, and native implementations using
-    'Rcpp' and 'RcppArmadillo'.
+Description: Provides implementations of machine-learning methods related to
+    gradient boosting, random forests, neural network regression, decision
+    stumps, and binary random forest classification. Background for gradient
+    boosting is provided by Friedman (2001)
+    <doi:10.1214/aos/1013203451>, while random forests are described by
+    Breiman (2001) <doi:10.1023/A:1010933404324>. The neural network
+    functionality uses a multilayer feedforward architecture; theoretical
+    background for this class of networks is provided by Hornik, Stinchcombe,
+    and White (1989) <doi:10.1016/0893-6080(89)90020-8>. Native code
+    integration uses 'Rcpp' as described by Eddelbuettel and Francois (2011)
+    <doi:10.18637/jss.v040.i08> and 'RcppArmadillo' as described by
+    Eddelbuettel and Sanderson (2014)
+    <doi:10.1016/j.csda.2013.02.005>. The package provides a unified modelling
+    interface, prediction functions, cross-validation examples, and native
+    implementations using 'Rcpp' and 'RcppArmadillo'.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Imports:
