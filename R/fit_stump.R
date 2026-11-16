@@ -4,6 +4,26 @@
 #' @param y Numeric vector of labels
 #' @return A list containing stump parameters
 #' @export
+#' @examples
+#' set.seed(96842)
+#'
+#' X <- cbind(
+#'   x1 = rnorm(30),
+#'   x2 = rnorm(30)
+#' )
+#'
+#' y <- ifelse(
+#'   X[, "x1"] > 0,
+#'   2,
+#'   -2
+#' )
+#'
+#' stump <- fit_stump(
+#'   X,
+#'   y
+#' )
+#'
+#' stump
 fit_stump <- function(X, y) {
   # Temporary placeholder until you implement the real stump logic
   list(

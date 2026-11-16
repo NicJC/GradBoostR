@@ -2,7 +2,7 @@
 % Please edit documentation in R/rf_fast_wrappers.R
 \name{rf_class_fit_fast}
 \alias{rf_class_fit_fast}
-\title{Fast Random Forest (Classification) Training}
+\title{Fit a Fast Classification Random Forest}
 \usage{
 rf_class_fit_fast(
   X,
@@ -14,23 +14,59 @@ rf_class_fit_fast(
 )
 }
 \arguments{
-\item{X}{Numeric matrix of features.}
+\item{X}{A numeric matrix containing predictor values. Rows represent
+observations and columns represent predictors.}
 
-\item{y}{Numeric vector of class labels.}
+\item{y}{An integer or numeric vector containing an encoded class label
+for each row of \code{X}.}
 
-\item{n_trees}{Number of trees.}
+\item{n_trees}{A positive integer giving the number of trees to fit.}
 
-\item{max_depth}{Maximum tree depth.}
+\item{max_depth}{A positive integer giving the maximum depth of each tree.}
 
-\item{mtry}{Number of variables sampled at each split.}
+\item{mtry}{A positive integer giving the number of predictors considered
+at each split. It must not exceed \code{ncol(X)}.}
 
-\item{use_gini}{Logical; use Gini impurity.}
+\item{use_gini}{A logical value indicating whether Gini impurity is used
+to evaluate candidate splits.}
 }
 \value{
-A list representing the trained forest.
+A list with one element per fitted classification tree. Each
+element stores the structure of one tree in the random forest. The
+length of the list equals \code{n_trees}. The returned forest can be passed
+to \code{\link[=rf_class_predict_fast]{rf_class_predict_fast()}}, \code{\link[=rf_class_predict_prob_fast]{rf_class_predict_prob_fast()}},
+\code{\link[=rf_predict_fast_class]{rf_predict_fast_class()}}, or \code{\link[=rf_predict_fast_class_prob]{rf_predict_fast_class_prob()}} to generate
+predictions.
 }
 \description{
-Internal function used by GradBoostR to train a classification random forest.
-Not intended for direct user use.
+Fits a random forest for classification using the native GradBoostR
+implementation.
 }
-\keyword{internal}
+\examples{
+set.seed(983)
+
+X <- cbind(
+  x1 = rnorm(30),
+  x2 = rnorm(30)
+)
+
+y <- as.integer(
+  X[, "x1"] + X[, "x2"] > 0
+)
+
+forest <- rf_class_fit_fast(
+  X,
+  y,
+  n_trees = 5L,
+  max_depth = 3L,
+  mtry = 1L,
+  use_gini = TRUE
+)
+
+length(forest)
+
+stopifnot(
+  is.list(forest),
+  length(forest) == 5L
+)
+}

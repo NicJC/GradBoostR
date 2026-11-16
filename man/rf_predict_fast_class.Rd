@@ -2,19 +2,60 @@
 % Please edit documentation in R/rf_fast_wrappers.R
 \name{rf_predict_fast_class}
 \alias{rf_predict_fast_class}
-\title{Fast Random Forest Classification (Hard Labels)}
+\title{Predict Hard Classes from a Fast Classification Forest}
 \usage{
 rf_predict_fast_class(X, forest_list)
 }
 \arguments{
-\item{X}{Numeric matrix of features.}
+\item{X}{A numeric matrix containing predictor values. The columns must
+correspond, in number and order, to those used to fit \code{forest_list}.}
 
-\item{forest_list}{List of trained trees.}
+\item{forest_list}{A fitted classification forest returned by
+\code{\link[=rf_class_fit_fast]{rf_class_fit_fast()}}.}
 }
 \value{
-Integer vector of predicted classes.
+An integer vector of length \code{nrow(X)}. Each element is the predicted
+class index for the corresponding observation. For a binary model fitted
+with classes encoded as \code{0} and \code{1}, the returned values are \code{0L} or
+\code{1L}.
 }
 \description{
-Internal function returning predicted class labels.
+Generates hard-class predictions from a classification forest fitted with
+\code{\link[=rf_class_fit_fast]{rf_class_fit_fast()}}. This is a lower-level prediction interface. Most
+users should use \code{\link[=rf_class_predict_fast]{rf_class_predict_fast()}}.
 }
-\keyword{internal}
+\examples{
+set.seed(614)
+
+X <- cbind(
+  x1 = rnorm(30),
+  x2 = rnorm(30)
+)
+
+y <- as.integer(
+  X[, "x1"] + X[, "x2"] > 0
+)
+
+forest <- rf_class_fit_fast(
+  X,
+  y,
+  n_trees = 5L,
+  max_depth = 3L,
+  mtry = 1L,
+  use_gini = TRUE
+)
+
+predictions <- rf_predict_fast_class(
+  X,
+  forest
+)
+
+head(predictions)
+
+stopifnot(
+  is.integer(predictions),
+  is.null(dim(predictions)),
+  length(predictions) == nrow(X),
+  all(predictions \%in\% c(0L, 1L))
+)
+}

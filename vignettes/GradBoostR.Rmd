@@ -204,7 +204,7 @@ nn_model <- gradboostr_fit(
   y_reg,
   method = "nn",
   hidden = 10,
-  epochs = 50,
+  epochs = 40,
   learning_rate = 0.01
 )
 
@@ -1125,7 +1125,7 @@ selected_nn_learning_rate <- as.numeric(
 
 cv_prediction_results <- vector(
   mode = "list",
-  length = n_folds * 3L
+  length = n_folds * 2L
 )
 result_index <- 1L
 ```
@@ -1539,7 +1539,7 @@ linear_test_rows <- setdiff(seq_len(n_linear), linear_train_rows)
 linear_forest <- rf_class_fit_fast(
   X_linear[linear_train_rows, , drop = FALSE],
   y_linear[linear_train_rows],
-  n_trees = 100,
+  n_trees = 50,
   max_depth = 6
 )
 linear_probability <- as.vector(
@@ -1608,7 +1608,7 @@ The nonlinear response is determined by distance from the origin. Observations i
 
 ```{r nonlinear-classification-data}
 set.seed(353)
-n_class <- 500L
+n_class <- 250L
 X_class <- cbind(
   X1 = rnorm(n_class),
   X2 = rnorm(n_class)
@@ -1657,7 +1657,7 @@ ggplot(
 nonlinear_forest <- rf_class_fit_fast(
   X_class[nonlinear_train_rows, , drop = FALSE],
   y_class[nonlinear_train_rows],
-  n_trees = 100,
+  n_trees = 50,
   max_depth = 6
 )
 nonlinear_probability <- as.vector(
@@ -1728,12 +1728,12 @@ The hard-class plot uses the forest fitted only on the nonlinear training partit
 x1_sequence <- seq(
   min(X_class[, "X1"]),
   max(X_class[, "X1"]),
-  length.out = 200
+  length.out = 100
 )
 x2_sequence <- seq(
   min(X_class[, "X2"]),
   max(X_class[, "X2"]),
-  length.out = 200
+  length.out = 100
 )
 decision_boundary_grid <- expand.grid(
   X1 = x1_sequence,
@@ -1824,7 +1824,7 @@ For visualization only, a second forest is fitted to the complete nonlinear data
 classification_surface_forest <- rf_class_fit_fast(
   X_class,
   y_class,
-  n_trees = 100,
+  n_trees = 50,
   max_depth = 6
 )
 classification_grid <- expand.grid(

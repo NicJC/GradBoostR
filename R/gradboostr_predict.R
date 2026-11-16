@@ -15,6 +15,39 @@
 #'   `type = "prob"`.
 #'
 #' @export
+#' @examples
+#' set.seed(9578)
+#'
+#' X <- cbind(
+#'   x1 = rnorm(30),
+#'   x2 = rnorm(30)
+#' )
+#'
+#' y <- 2 * X[, "x1"] -
+#'   X[, "x2"] +
+#'   rnorm(30, sd = 0.2)
+#'
+#' model <- gradboostr_fit(
+#'   X,
+#'   y,
+#'   method = "gbm",
+#'   learning_rate = 0.1,
+#'   n_trees = 5
+#' )
+#'
+#' predictions <- gradboostr_predict(
+#'   model,
+#'   X,
+#'   type = "response"
+#' )
+#'
+#' head(predictions)
+#'
+#' stopifnot(
+#'   is.numeric(predictions),
+#'   length(predictions) == nrow(X),
+#'   all(is.finite(predictions))
+#' )
 gradboostr_predict <- function(
     object,
     newdata,

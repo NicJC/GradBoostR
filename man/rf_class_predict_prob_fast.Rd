@@ -2,15 +2,60 @@
 % Please edit documentation in R/rf_class_prob.R
 \name{rf_class_predict_prob_fast}
 \alias{rf_class_predict_prob_fast}
-\title{Random Forest Classification Probabilities}
+\title{Predict Positive-Class Probabilities}
 \usage{
 rf_class_predict_prob_fast(X, forest_list)
 }
 \arguments{
-\item{X}{Numeric matrix of predictors.}
+\item{X}{A numeric matrix containing predictor values. The columns must
+correspond, in number and order, to the predictors used to fit
+\code{forest_list}.}
 
-\item{forest_list}{Forest returned by rf_class_fit_fast().}
+\item{forest_list}{A fitted binary-classification forest returned by
+\code{\link[=rf_class_fit_fast]{rf_class_fit_fast()}}.}
+}
+\value{
+A numeric vector of length \code{nrow(X)}. Each element is the estimated
+probability that the corresponding observation belongs to class \code{1}.
+Returned values are between zero and one.
 }
 \description{
-Predict class probabilities from a fitted random forest.
+Generates estimated probabilities for class \code{1} from a binary random
+forest fitted with \code{\link[=rf_class_fit_fast]{rf_class_fit_fast()}}.
+}
+\examples{
+set.seed(872)
+
+X <- cbind(
+  x1 = rnorm(30),
+  x2 = rnorm(30)
+)
+
+y <- as.integer(
+  X[, "x1"] + X[, "x2"] > 0
+)
+
+forest <- rf_class_fit_fast(
+  X,
+  y,
+  n_trees = 10,
+  max_depth = 3
+)
+
+probabilities <- rf_class_predict_prob_fast(
+  X,
+  forest
+)
+
+head(probabilities)
+
+stopifnot(
+  is.numeric(probabilities),
+  is.null(dim(probabilities)),
+  length(probabilities) == nrow(X),
+  all(is.finite(probabilities)),
+  all(probabilities >= 0),
+  all(probabilities <= 1)
+)
+
 }

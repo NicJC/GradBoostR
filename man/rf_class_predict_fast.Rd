@@ -2,19 +2,57 @@
 % Please edit documentation in R/rf_fast_wrappers.R
 \name{rf_class_predict_fast}
 \alias{rf_class_predict_fast}
-\title{Fast Random Forest (Classification) Prediction}
+\title{Predict Classes from a Fast Classification Random Forest}
 \usage{
 rf_class_predict_fast(X, forest_list)
 }
 \arguments{
-\item{X}{Numeric matrix of features.}
+\item{X}{A numeric matrix containing predictor values. The columns must
+correspond, in number and order, to those used to fit \code{forest_list}.}
 
-\item{forest_list}{List of trained trees.}
+\item{forest_list}{A fitted classification forest returned by
+\code{\link[=rf_class_fit_fast]{rf_class_fit_fast()}}.}
 }
 \value{
-A vector of predicted class labels.
+A numeric vector of length \code{nrow(X)}. Each element is the predicted
+binary class, encoded as \code{0} or \code{1}, for the corresponding observation.
 }
 \description{
-Internal prediction function for classification random forests.
+Generates binary class predictions from a classification forest fitted
+with \code{\link[=rf_class_fit_fast]{rf_class_fit_fast()}}.
 }
-\keyword{internal}
+\examples{
+set.seed(467)
+
+X <- cbind(
+  x1 = rnorm(30),
+  x2 = rnorm(30)
+)
+
+y <- as.integer(
+  X[, "x1"] + X[, "x2"] > 0
+)
+
+forest <- rf_class_fit_fast(
+  X,
+  y,
+  n_trees = 5L,
+  max_depth = 3L,
+  mtry = 1L,
+  use_gini = TRUE
+)
+
+predicted_class <- rf_class_predict_fast(
+  X,
+  forest
+)
+
+head(predicted_class)
+
+stopifnot(
+  is.numeric(predicted_class),
+  is.null(dim(predicted_class)),
+  length(predicted_class) == nrow(X),
+  all(predicted_class \%in\% c(0, 1))
+)
+}

@@ -17,3 +17,24 @@ A list containing stump parameters
 \description{
 Fit a decision stump
 }
+\examples{
+set.seed(96842)
+
+X <- cbind(
+  x1 = rnorm(30),
+  x2 = rnorm(30)
+)
+
+y <- ifelse(
+  X[, "x1"] > 0,
+  2,
+  -2
+)
+
+stump <- fit_stump(
+  X,
+  y
+)
+
+stump
+}

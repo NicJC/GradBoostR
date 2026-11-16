@@ -138,7 +138,7 @@ test_that("prediction rejects missing predictor values", {
 })
 
 test_that("random forest prediction returns a numeric vector", {
-  set.seed(123)
+  set.seed(9735)
 
   X <- matrix(
     rnorm(120),
@@ -183,7 +183,7 @@ test_that("random forest prediction returns a numeric vector", {
 })
 
 test_that("gradient boosting stores n_features", {
-  set.seed(123)
+  set.seed(942)
 
   X <- matrix(
     rnorm(90),
@@ -213,7 +213,7 @@ test_that("gradient boosting stores n_features", {
 })
 
 test_that("gradient boosting rejects an incorrect predictor count", {
-  set.seed(123)
+  set.seed(6943)
 
   X <- matrix(
     rnorm(90),
@@ -251,4 +251,58 @@ test_that("gradient boosting rejects an incorrect predictor count", {
   )
 })
 
+test_that(
+  "rf_class_predict_prob_fast returns positive-class probabilities",
+  {
+    set.seed(872)
 
+    X <- cbind(
+      x1 = rnorm(30),
+      x2 = rnorm(30)
+    )
+
+    y <- as.integer(
+      X[, "x1"] + X[, "x2"] > 0
+    )
+
+    forest <- rf_class_fit_fast(
+      X,
+      y,
+      n_trees = 10,
+      max_depth = 3
+    )
+
+    probabilities <- rf_class_predict_prob_fast(
+      X,
+      forest
+    )
+
+    expect_type(
+      probabilities,
+      "double"
+    )
+
+    expect_null(
+      dim(probabilities)
+    )
+
+    expect_length(
+      probabilities,
+      nrow(X)
+    )
+
+    expect_true(
+      all(is.finite(probabilities))
+    )
+
+    expect_gte(
+      min(probabilities),
+      0
+    )
+
+    expect_lte(
+      max(probabilities),
+      1
+    )
+  }
+)

@@ -2,25 +2,60 @@
 % Please edit documentation in R/rf_fast_wrappers.R
 \name{rf_fit_fast}
 \alias{rf_fit_fast}
-\title{Fast Random Forest (Regression) Training}
+\title{Fit a Fast Regression Random Forest}
 \usage{
 rf_fit_fast(X, y, n_trees = 200, max_depth = 5, mtry = 3)
 }
 \arguments{
-\item{X}{Numeric matrix of features.}
+\item{X}{A numeric matrix containing predictor values. Rows represent
+observations and columns represent predictors.}
 
-\item{y}{Numeric vector of responses.}
+\item{y}{A numeric response vector containing one value for each row
+of \code{X}.}
 
-\item{n_trees}{Number of trees.}
+\item{n_trees}{A positive integer giving the number of trees to fit.}
 
-\item{max_depth}{Maximum tree depth.}
+\item{max_depth}{A positive integer giving the maximum depth of each tree.}
 
-\item{mtry}{Number of variables sampled at each split.}
+\item{mtry}{A positive integer giving the number of predictors considered
+at each split. It must not exceed \code{ncol(X)}.}
 }
 \value{
-A list representing the trained forest.
+A list with one element per fitted regression tree. Each element
+stores the structure of one tree in the random forest. The length of the
+list equals \code{n_trees}. The returned forest can be passed to
+\code{\link[=rf_predict_fast]{rf_predict_fast()}} to generate numeric response predictions.
 }
 \description{
-Internal function used by GradBoostR to train a regression random forest.
+Fits a random forest for a numeric response using the native GradBoostR
+implementation.
 }
-\keyword{internal}
+\examples{
+set.seed(528)
+
+X <- cbind(
+  x1 = rnorm(30),
+  x2 = rnorm(30)
+)
+
+y <- (
+  2 * X[, "x1"] -
+    X[, "x2"] +
+    rnorm(30, sd = 0.2)
+)
+
+forest <- rf_fit_fast(
+  X,
+  y,
+  n_trees = 5L,
+  max_depth = 3L,
+  mtry = 1L
+)
+
+length(forest)
+
+stopifnot(
+  is.list(forest),
+  length(forest) == 5L
+)
+}

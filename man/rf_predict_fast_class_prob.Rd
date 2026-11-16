@@ -2,21 +2,68 @@
 % Please edit documentation in R/rf_fast_wrappers.R
 \name{rf_predict_fast_class_prob}
 \alias{rf_predict_fast_class_prob}
-\title{Fast Random Forest Classification (Probabilities)}
+\title{Predict Class Probabilities from a Fast Classification Forest}
 \usage{
 rf_predict_fast_class_prob(X, forest_list, n_classes)
 }
 \arguments{
-\item{X}{Numeric matrix of features.}
+\item{X}{A numeric matrix containing predictor values. The columns must
+correspond, in number and order, to those used to fit \code{forest_list}.}
 
-\item{forest_list}{List of trained trees.}
+\item{forest_list}{A fitted classification forest returned by
+\code{\link[=rf_class_fit_fast]{rf_class_fit_fast()}}.}
 
-\item{n_classes}{Number of classes.}
+\item{n_classes}{A positive integer giving the number of response classes.}
 }
 \value{
-Numeric matrix of class probabilities.
+A numeric matrix with \code{nrow(X)} rows and \code{n_classes} columns.
+Each row contains the estimated class probabilities for one observation,
+and each column corresponds to one encoded response class.
 }
 \description{
-Internal function returning class probabilities.
+Generates estimated class probabilities from a classification forest
+fitted with \code{\link[=rf_class_fit_fast]{rf_class_fit_fast()}}. This is a lower-level probability
+interface. For binary models where only the positive-class probability is
+required, use \code{\link[=rf_class_predict_prob_fast]{rf_class_predict_prob_fast()}}.
 }
-\keyword{internal}
+\examples{
+set.seed(358)
+
+X <- cbind(
+  x1 = rnorm(30),
+  x2 = rnorm(30)
+)
+
+y <- as.integer(
+  X[, "x1"] + X[, "x2"] > 0
+)
+
+forest <- rf_class_fit_fast(
+  X,
+  y,
+  n_trees = 5L,
+  max_depth = 3L,
+  mtry = 1L,
+  use_gini = TRUE
+)
+
+probabilities <- rf_predict_fast_class_prob(
+  X,
+  forest,
+  n_classes = 2L
+)
+
+head(probabilities)
+
+stopifnot(
+  is.matrix(probabilities),
+  identical(
+    dim(probabilities),
+    c(nrow(X), 2L)
+  ),
+  is.numeric(probabilities),
+  all(is.finite(probabilities)),
+  all(probabilities >= 0),
+  all(probabilities <= 1)
+)
+}
