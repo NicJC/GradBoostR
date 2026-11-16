@@ -216,7 +216,7 @@ nn_model <- gradboostr_fit(
   y_reg,
   method = "nn",
   hidden = 10,
-  epochs = 50,
+  epochs = 40,
   learning_rate = 0.01
 )
 
@@ -237,7 +237,7 @@ stopifnot(
 
 nn_rmse <- rmse(y_reg, nn_prediction)
 nn_rmse
-#> [1] 2.107537
+#> [1] 2.108868
 ```
 
 ### In-sample model diagnostics
@@ -631,7 +631,7 @@ knitr::kable(
 |:------------------|----------:|------------:|-------:|-------:|--------:|
 | Random forest     |   -0.0041 |     -0.0057 | 0.3806 | 0.4591 |  0.4610 |
 | Gradient boosting |    0.0000 |     -0.0105 | 0.5952 | 0.7449 |  0.7481 |
-| Neural network    |   -0.0034 |      0.2006 | 1.6286 | 2.1075 |  2.1164 |
+| Neural network    |   -0.0052 |      0.1990 | 1.6295 | 2.1089 |  2.1177 |
 
 Training-set regression error comparison {.table}
 
@@ -1346,7 +1346,7 @@ selected_nn_learning_rate <- as.numeric(
 
 cv_prediction_results <- vector(
   mode = "list",
-  length = n_folds * 3L
+  length = n_folds * 2L
 )
 result_index <- 1L
 ```
@@ -1809,7 +1809,7 @@ linear_test_rows <- setdiff(seq_len(n_linear), linear_train_rows)
 linear_forest <- rf_class_fit_fast(
   X_linear[linear_train_rows, , drop = FALSE],
   y_linear[linear_train_rows],
-  n_trees = 100,
+  n_trees = 50,
   max_depth = 6
 )
 linear_probability <- as.vector(
@@ -1824,8 +1824,8 @@ linear_metrics <- classification_metrics(
   linear_prediction
 )
 linear_metrics
-#>    Accuracy Precision    Recall Specificity        F1
-#> 1 0.9533333 0.9428571 0.9565217   0.9506173 0.9496403
+#>   Accuracy Precision    Recall Specificity        F1
+#> 1     0.94 0.9166667 0.9565217   0.9259259 0.9361702
 ```
 
 ``` r
@@ -1891,7 +1891,7 @@ an explicit nonlinear transformation of the predictors.
 ``` r
 
 set.seed(353)
-n_class <- 500L
+n_class <- 250L
 X_class <- cbind(
   X1 = rnorm(n_class),
   X2 = rnorm(n_class)
@@ -1944,7 +1944,7 @@ ggplot(
 nonlinear_forest <- rf_class_fit_fast(
   X_class[nonlinear_train_rows, , drop = FALSE],
   y_class[nonlinear_train_rows],
-  n_trees = 100,
+  n_trees = 50,
   max_depth = 6
 )
 nonlinear_probability <- as.vector(
@@ -1960,7 +1960,7 @@ nonlinear_metrics <- classification_metrics(
 )
 nonlinear_metrics
 #>    Accuracy Precision    Recall Specificity        F1
-#> 1 0.9466667  0.967033 0.9462366   0.9473684 0.9565217
+#> 1 0.9733333 0.9761905 0.9761905    0.969697 0.9761905
 ```
 
 ``` r
@@ -2027,12 +2027,12 @@ The black contour marks the probability threshold `P(Class = 1) = 0.5`.
 x1_sequence <- seq(
   min(X_class[, "X1"]),
   max(X_class[, "X1"]),
-  length.out = 200
+  length.out = 100
 )
 x2_sequence <- seq(
   min(X_class[, "X2"]),
   max(X_class[, "X2"]),
-  length.out = 200
+  length.out = 100
 )
 decision_boundary_grid <- expand.grid(
   X1 = x1_sequence,
@@ -2130,7 +2130,7 @@ complete-data model is not used to calculate performance metrics.
 classification_surface_forest <- rf_class_fit_fast(
   X_class,
   y_class,
-  n_trees = 100,
+  n_trees = 50,
   max_depth = 6
 )
 classification_grid <- expand.grid(
@@ -2225,8 +2225,8 @@ knitr::kable(
 
 | Example           | Accuracy | Precision | Recall | Specificity |     F1 |    AUC |
 |:------------------|---------:|----------:|-------:|------------:|-------:|-------:|
-| Linear boundary   |   0.9533 |    0.9429 | 0.9565 |      0.9506 | 0.9496 | 0.9743 |
-| Circular boundary |   0.9467 |    0.9670 | 0.9462 |      0.9474 | 0.9565 | 0.9823 |
+| Linear boundary   |   0.9400 |    0.9167 | 0.9565 |      0.9259 | 0.9362 | 0.9744 |
+| Circular boundary |   0.9733 |    0.9762 | 0.9762 |      0.9697 | 0.9762 | 0.9982 |
 
 Held-out classification performance {.table style="width:100%;"}
 
