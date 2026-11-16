@@ -1,7 +1,7 @@
-# Fit a Fast Classification Random Forest
+# Fast Random Forest (Classification) Training
 
-Fits a random forest for classification using the native GradBoostR
-implementation.
+Internal function used by GradBoostR to train a classification random
+forest. Not intended for direct user use.
 
 ## Usage
 
@@ -20,72 +20,28 @@ rf_class_fit_fast(
 
 - X:
 
-  A numeric matrix containing predictor values. Rows represent
-  observations and columns represent predictors.
+  Numeric matrix of features.
 
 - y:
 
-  An integer or numeric vector containing an encoded class label for
-  each row of `X`.
+  Numeric vector of class labels.
 
 - n_trees:
 
-  A positive integer giving the number of trees to fit.
+  Number of trees.
 
 - max_depth:
 
-  A positive integer giving the maximum depth of each tree.
+  Maximum tree depth.
 
 - mtry:
 
-  A positive integer giving the number of predictors considered at each
-  split. It must not exceed `ncol(X)`.
+  Number of variables sampled at each split.
 
 - use_gini:
 
-  A logical value indicating whether Gini impurity is used to evaluate
-  candidate splits.
+  Logical; use Gini impurity.
 
 ## Value
 
-A list with one element per fitted classification tree. Each element
-stores the structure of one tree in the random forest. The length of the
-list equals `n_trees`. The returned forest can be passed to
-[`rf_class_predict_fast()`](https://nicjc.github.io/GradBoostR/reference/rf_class_predict_fast.md),
-[`rf_class_predict_prob_fast()`](https://nicjc.github.io/GradBoostR/reference/rf_class_predict_prob_fast.md),
-[`rf_predict_fast_class()`](https://nicjc.github.io/GradBoostR/reference/rf_predict_fast_class.md),
-or
-[`rf_predict_fast_class_prob()`](https://nicjc.github.io/GradBoostR/reference/rf_predict_fast_class_prob.md)
-to generate predictions.
-
-## Examples
-
-``` r
-set.seed(983)
-
-X <- cbind(
-  x1 = rnorm(30),
-  x2 = rnorm(30)
-)
-
-y <- as.integer(
-  X[, "x1"] + X[, "x2"] > 0
-)
-
-forest <- rf_class_fit_fast(
-  X,
-  y,
-  n_trees = 5L,
-  max_depth = 3L,
-  mtry = 1L,
-  use_gini = TRUE
-)
-
-length(forest)
-#> [1] 5
-
-stopifnot(
-  is.list(forest),
-  length(forest) == 5L
-)
-```
+A list representing the trained forest.
